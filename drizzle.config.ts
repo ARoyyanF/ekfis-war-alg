@@ -8,5 +8,5 @@ export default {
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-  tablesFilter: ["my-stack-25q1_*"],
+  tablesFilter: ["ekfis-war-alg_*"],
 } satisfies Config;

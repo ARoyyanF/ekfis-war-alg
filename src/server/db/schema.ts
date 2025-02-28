@@ -18,7 +18,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `my-stack-25q1_${name}`);
+export const createTable = pgTableCreator((name) => `ekfis-war-alg_${name}`);
 
 export const images = createTable("image", {
   id: serial("id").primaryKey(),
