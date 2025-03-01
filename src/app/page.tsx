@@ -32,25 +32,10 @@ import UserInput from "./_components/UserInput"
 import Results from "./_components/Results"
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-const TIMES = [
-  "9:00",
-  "9:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-]
+const TIMES: string[] = [];
+for (let hour = 7; hour <= 16; hour++) {
+  TIMES.push(`${hour}:00`);
+}
 
 export default function Home() {
   const [availability, setAvailability] = useState<{ [key: string]: number }>({})
