@@ -33,18 +33,34 @@ import Results from "./_components/Results";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 
+import AvailabilityTypeSelector from "./_components/AvailabilityTypeSelector";
+
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const TIMES: string[] = [];
 for (let hour = 7; hour <= 16; hour++) {
   TIMES.push(`${hour}:00`);
 }
+export const AVAILABILITY_TYPES = {
+  available: {
+    label: "Available",
+    color: "bg-green-500",
+    resultColor: "rgba(0, 128, 0, ",
+  },
+  leisure: {
+    label: "Leisure",
+    color: "bg-blue-500",
+    resultColor: "rgba(0, 0, 255, ",
+  },
+  busy: { label: "Busy", color: "bg-red-500", resultColor: "rgba(255, 0, 0, " },
+};
 
 export default function Home() {
   const router = useRouter();
-  const [availability, setAvailability] = useState<{ [key: string]: number }>(
-    {},
-  );
+  const [availability, setAvailability] = useState<{
+    [key: string]: { [type: string]: number };
+  }>({});
   const [username, setUsername] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>("available");
 
   useEffect(() => {
     const storedAvailability = localStorage.getItem("availability");
@@ -60,12 +76,21 @@ export default function Home() {
   ) => {
     const key = `${day}-${time}`;
     setAvailability((prev) => {
+      // Initialize if not exists
+      const prevCellData = prev[key] || {};
+
+      // Update the count for the selected type
+      const newCellData = {
+        ...prevCellData,
+        //[selectedType]: (prevCellData[selectedType] || 0) + (isAvailable ? 1 : -1),
+        [selectedType]: isAvailable
+          ? (prevCellData[selectedType] ?? 0) + 1
+          : Math.max(0, (prevCellData[selectedType] ?? 0) - 1),
+      };
+
       const newAvailability = {
         ...prev,
-        // [key]: (prev[key] ?? 0) + (isAvailable ? 1 : -1),
-        [key]: isAvailable
-          ? (prev[key] ?? 0) + 1
-          : Math.max(0, (prev[key] ?? 0) - 1),
+        [key]: newCellData,
       };
       localStorage.setItem("availability", JSON.stringify(newAvailability));
       return newAvailability;
@@ -76,11 +101,16 @@ export default function Home() {
     <main className="container mx-auto p-4">
       <h1 className="mb-4 text-3xl font-bold">When2Meet Clone</h1>
       <UserInput username={username} setUsername={setUsername} />
+      <AvailabilityTypeSelector
+        selectedType={selectedType}
+        onTypeChange={setSelectedType}
+      />
       <CalendarGrid
         days={DAYS}
         times={TIMES}
         availability={availability}
         onAvailabilityChange={handleAvailabilityChange}
+        selectedType={selectedType}
       />
       <Button
         onClick={() => {
