@@ -34,7 +34,12 @@ export default function CalendarGrid({
       const key = `${day}-${time}`;
       const cellAvailability = userAvailability[key] || {};
       const currentTypeAvailability = cellAvailability[selectedType] || false;
-      const newAvailability = isSelecting;
+      const otherTypeAvailability = Object.keys(AVAILABILITY_TYPES)
+        .filter((type) => type !== selectedType)
+        .some((type) => cellAvailability[type]);
+
+      const newAvailability = isSelecting && !otherTypeAvailability;
+      // const newAvailability = isSelecting;
 
       if (currentTypeAvailability !== newAvailability) {
         setUserAvailability((prev) => ({
