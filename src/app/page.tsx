@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { api, HydrateClient } from "~/trpc/server";
 
@@ -26,43 +26,55 @@ import { Gallery } from "./_components/gallery";
 //   );
 // }
 
-import { useState, useEffect } from "react"
-import CalendarGrid from "./_components/CalendarGrid"
-import UserInput from "./_components/UserInput"
-import Results from "./_components/Results"
+import { useState, useEffect } from "react";
+import CalendarGrid from "./_components/CalendarGrid";
+import UserInput from "./_components/UserInput";
+import Results from "./_components/Results";
+import { Button } from "~/components/ui/button";
+import { useRouter } from "next/navigation";
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"]
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const TIMES: string[] = [];
 for (let hour = 7; hour <= 16; hour++) {
   TIMES.push(`${hour}:00`);
 }
 
 export default function Home() {
-  const [availability, setAvailability] = useState<{ [key: string]: number }>({})
-  const [username, setUsername] = useState<string>("")
+  const router = useRouter();
+  const [availability, setAvailability] = useState<{ [key: string]: number }>(
+    {},
+  );
+  const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
-    const storedAvailability = localStorage.getItem("availability")
+    const storedAvailability = localStorage.getItem("availability");
     if (storedAvailability) {
-      setAvailability(JSON.parse(storedAvailability))
+      setAvailability(JSON.parse(storedAvailability));
     }
-  }, [])
+  }, []);
 
-  const handleAvailabilityChange = (day: string, time: string, isAvailable: boolean) => {
-    const key = `${day}-${time}`
+  const handleAvailabilityChange = (
+    day: string,
+    time: string,
+    isAvailable: boolean,
+  ) => {
+    const key = `${day}-${time}`;
     setAvailability((prev) => {
       const newAvailability = {
         ...prev,
-        [key]: (prev[key] ?? 0) + (isAvailable ? 1 : -1),
-      }
-      localStorage.setItem("availability", JSON.stringify(newAvailability))
-      return newAvailability
-    })
-  }
+        // [key]: (prev[key] ?? 0) + (isAvailable ? 1 : -1),
+        [key]: isAvailable
+          ? (prev[key] ?? 0) + 1
+          : Math.max(0, (prev[key] ?? 0) - 1),
+      };
+      localStorage.setItem("availability", JSON.stringify(newAvailability));
+      return newAvailability;
+    });
+  };
 
   return (
     <main className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">When2Meet Clone</h1>
+      <h1 className="mb-4 text-3xl font-bold">When2Meet Clone</h1>
       <UserInput username={username} setUsername={setUsername} />
       <CalendarGrid
         days={DAYS}
@@ -70,9 +82,17 @@ export default function Home() {
         availability={availability}
         onAvailabilityChange={handleAvailabilityChange}
       />
+      <Button
+        onClick={() => {
+          localStorage.setItem("availability", "");
+          setAvailability({});
+          router.refresh();
+        }}
+      >
+        Reset
+      </Button>
+      <pre>{JSON.stringify(availability, null, 2)}</pre>
       <Results days={DAYS} times={TIMES} availability={availability} />
     </main>
-  )
+  );
 }
-
-
