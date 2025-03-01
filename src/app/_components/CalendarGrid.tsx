@@ -6,7 +6,7 @@ import { AVAILABILITY_TYPES } from "../page";
 interface CalendarGridProps {
   days: string[];
   times: string[];
-  availability: { [key: string]: { [type: string]: number } };
+  initialUserAvailability?: { [key: string]: { [type: string]: boolean } };
   onAvailabilityChange: (
     day: string,
     time: string,
@@ -18,7 +18,7 @@ interface CalendarGridProps {
 export default function CalendarGrid({
   days,
   times,
-  availability,
+  initialUserAvailability,
   onAvailabilityChange,
   selectedType,
 }: CalendarGridProps) {
@@ -28,6 +28,10 @@ export default function CalendarGrid({
   const [isDragging, setIsDragging] = useState(false);
   const [isSelecting, setIsSelecting] = useState(true);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setUserAvailability(initialUserAvailability);
+  }, []);
 
   const handleCellInteraction = useCallback(
     (day: string, time: string) => {

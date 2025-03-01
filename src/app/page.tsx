@@ -108,7 +108,7 @@ export default function Home() {
       <CalendarGrid
         days={DAYS}
         times={TIMES}
-        availability={availability}
+        initialUserAvailability={{}}
         onAvailabilityChange={handleAvailabilityChange}
         selectedType={selectedType}
       />
