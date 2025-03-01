@@ -20,6 +20,18 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `ekfis-war-alg_${name}`);
 
+export const mahasiswas = createTable("mahasiswa", {
+  nim: integer("nim").primaryKey().notNull(),
+  name: varchar("name", { length: 256 }).notNull(),
+  authId: varchar("auth_id", { length: 512 }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
 export const images = createTable("image", {
   id: serial("id").primaryKey(),
   userId: varchar("user_id", { length: 256 })
