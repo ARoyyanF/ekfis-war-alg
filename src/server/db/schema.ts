@@ -48,6 +48,22 @@ export const images = createTable("image", {
   ),
 });
 
+export const buktis = createTable("bukti", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 256 })
+    .notNull()
+    .default("default_user_id"),
+  name: varchar("name", { length: 256 }).notNull(),
+  url: varchar("url", { length: 1024 }).notNull(),
+  key: varchar("key", { length: 1024 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
 export const users = createTable("user", {
   id: varchar("id", { length: 255 })
     .notNull()

@@ -146,7 +146,7 @@ export default function Home() {
         selectedType={selectedType}
       />
       <UploadButton
-        endpoint="imageUploader"
+        endpoint="buktiUploader"
         onClientUploadComplete={() => router.refresh()}
       />
       <Button
