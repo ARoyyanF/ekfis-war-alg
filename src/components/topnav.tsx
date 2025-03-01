@@ -1,46 +1,74 @@
 "use client";
-import Link from "next/link";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { api } from "~/trpc/react";
-import type { RouterOutputs } from "~/trpc/react";
-// import {api} from '~/trpc/server';
 import { UploadButton } from "~/utils/uploadthing";
+import { api } from "~/trpc/react";
+import { Button } from "./ui/button";
+import { toast } from "sonner";
+import { NimForm } from "~/app/_components/nimForm";
 
-export function TopNav({
-  initialSession,
-}: {
-  initialSession: RouterOutputs["authorization"]["currentSession"];
-}) {
-  const router = useRouter();
-  const session = api.authorization.currentSession.useQuery(undefined, {
-    initialData: initialSession,
+export function TopNav() {
+  const { isSignedIn } = useUser();
+  const unbindNimWithUser =
+    api.authorization.unbindNimWithRegisteredUser.useMutation();
+  const mahasiswaData = api.authorization.getMahasiswaData.useQuery(undefined, {
+    enabled: isSignedIn,
   });
+
   return (
     <nav className="flex w-full items-center justify-between border-b-4 p-4 text-xl font-semibold">
       <div>TopNav</div>
-      <UploadButton
+      {/* <UploadButton
         endpoint="imageUploader"
         onClientUploadComplete={() => router.refresh()}
-      />
+      /> */}
+      <div>EGGFISH WAR ALGORITHM RAAAAH </div>
       <div className="flex flex-row items-center justify-center gap-4">
-        <div className="text-center text-2xl">
-          {session.data && (
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          {mahasiswaData.data && (
             <div className="flex flex-row items-center gap-4">
-              <span>Logged in as {session.data?.user?.name}</span>
-              <img
-                src={session.data.user.image}
-                alt=""
-                className="h-12 rounded-full"
-              />
+              {/* <span>Logged in as {user?.fullName}</span> */}
+              <div className="flex flex-col text-right">
+                <p>{mahasiswaData?.data?.name}</p>
+                <p>{mahasiswaData?.data?.nim}</p>
+              </div>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={async () => {
+                  const statusToast = toast.loading("Unbinding NIM...");
+                  try {
+                    await unbindNimWithUser.mutateAsync();
+                    toast.success("NIM unbound successfully");
+                  } catch (e) {
+                    toast.error("Error: " + JSON.stringify(e));
+                  } finally {
+                    toast.dismiss(statusToast);
+                    window.location.reload();
+                  }
+                }}
+              >
+                Unbind NIM
+              </Button>
             </div>
           )}
-        </div>
-        <Link
-          href={session.data ? "/api/auth/signout" : "/api/auth/signin"}
-          className="rounded-full bg-black/10 px-10 py-3 font-semibold no-underline transition hover:bg-black/20"
-        >
-          {session.data ? "Sign out" : "Sign in"}
-        </Link>
+          {!mahasiswaData.data && (
+            <div>
+              <NimForm />
+            </div>
+          )}
+
+          <UserButton />
+        </SignedIn>
       </div>
     </nav>
   );

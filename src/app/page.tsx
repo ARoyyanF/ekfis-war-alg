@@ -1,8 +1,12 @@
 "use client";
 
 import { api, HydrateClient } from "~/trpc/server";
+import { auth } from "@clerk/nextjs/server";
 
-import { Gallery } from "./_components/gallery";
+import TestAuth from "./_components/test-auth";
+import { SignedIn } from "@clerk/nextjs";
+import { NimForm } from "./_components/nimForm";
+import { Button } from "~/components/ui/button";
 
 // export default async function HomePage() {
 //   const session = await api.authorization.currentSession();
