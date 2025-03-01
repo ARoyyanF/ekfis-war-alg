@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/only-throw-error */
-// import { auth } from "@clerk/nextjs/server";
-import { auth } from "~/server/auth";
+import { auth } from "@clerk/nextjs/server";
+// import { auth } from "~/server/auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { db } from "~/server/db";
@@ -24,14 +24,13 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const session = await auth();
+      const user = await auth();
 
       // If you throw, the user will not be able to upload
-      if (!session) throw new UploadThingError("Unauthorized");
-      const user = session.user;
+      if (!user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId: user.userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
