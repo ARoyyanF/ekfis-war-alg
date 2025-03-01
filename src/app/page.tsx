@@ -7,6 +7,8 @@ import TestAuth from "./_components/test-auth";
 import { SignedIn } from "@clerk/nextjs";
 import { NimForm } from "./_components/nimForm";
 import { Button } from "~/components/ui/button";
+import EventForm from "./_components/EventForm";
+import { useRouter } from "next/navigation";
 
 // export default async function HomePage() {
 //   const session = await api.authorization.currentSession();
@@ -34,7 +36,6 @@ import { useState, useEffect } from "react";
 import CalendarGrid from "./_components/CalendarGrid";
 import UserInput from "./_components/UserInput";
 import Results from "./_components/Results";
-import { useRouter } from "next/navigation";
 
 import AvailabilityTypeSelector from "./_components/AvailabilityTypeSelector";
 import { UploadButton } from "~/utils/uploadthing";
@@ -161,6 +162,7 @@ export default function Home() {
 
       <pre>{JSON.stringify(availability, null, 2)}</pre>
       <Results days={DAYS} times={TIMES} availability={availability} />
+      <EventForm username={username} availability={availability} />
     </main>
   );
 }
