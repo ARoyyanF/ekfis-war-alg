@@ -41,17 +41,17 @@ for (let hour = 7; hour <= 16; hour++) {
   TIMES.push(`${hour}:00`);
 }
 export const AVAILABILITY_TYPES = {
-  available: {
-    label: "Available",
-    color: "bg-green-500",
+  leastCompromisable: {
+    label: "leastCompromisable",
+    color: "bg-red-500",
     resultColor: "rgba(0, 128, 0, ",
   },
-  leisure: {
-    label: "Leisure",
+  highPriority: {
+    label: "highPriority",
     color: "bg-blue-500",
     resultColor: "rgba(0, 0, 255, ",
   },
-  busy: { label: "Busy", color: "bg-red-500", resultColor: "rgba(255, 0, 0, " },
+  mediumPriority: { label: "mediumPriority", color: "bg-green-500", resultColor: "rgba(255, 0, 0, " },
 };
 
 export default function Home() {
@@ -60,7 +60,7 @@ export default function Home() {
     [key: string]: { [type: string]: number };
   }>({});
   const [username, setUsername] = useState<string>("");
-  const [selectedType, setSelectedType] = useState<string>("available");
+  const [selectedType, setSelectedType] = useState<string>("leastCompromisable");
 
   useEffect(() => {
     const storedAvailability = localStorage.getItem("availability");
@@ -105,6 +105,26 @@ export default function Home() {
         selectedType={selectedType}
         onTypeChange={setSelectedType}
       />
+      <div className="mt-6 mb-6">
+        <h3 className="mb-2 text-lg font-semibold">Legend</h3>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 bg-red-500"></div>
+            <span>Least compromisable</span>
+            <span className="text-gray-400 italic">Matkul wajib, kerja</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 bg-blue-500"></div>
+            <span>High priority</span>
+            <span className="text-gray-400 italic">Matkul pilihan, magang, MBKM </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 bg-green-500"></div>
+            <span>Medium priority</span>
+            <span className="text-gray-400 italic">Agenda lain yang bisa digeser</span>
+          </div>
+        </div>
+      </div>
       <CalendarGrid
         days={DAYS}
         times={TIMES}
@@ -121,6 +141,7 @@ export default function Home() {
       >
         Reset
       </Button>
+      
       <pre>{JSON.stringify(availability, null, 2)}</pre>
       <Results days={DAYS} times={TIMES} availability={availability} />
     </main>

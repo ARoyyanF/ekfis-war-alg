@@ -8,9 +8,9 @@ export default function AvailabilityTypeSelector({
   onTypeChange,
 }: AvailabilityTypeSelectorProps) {
   const availabilityTypes = [
-    { id: "available", label: "Available", color: "bg-green-500" },
-    { id: "leisure", label: "Leisure", color: "bg-blue-500" },
-    { id: "busy", label: "Busy", color: "bg-red-500" },
+    { id: "leastCompromisable", label: "Least Compromisable", color: "bg-red-500" },
+    { id: "highPriority", label: "High Priority", color: "bg-blue-500" },
+    { id: "mediumPriority", label: "Medium Priority", color: "bg-green-500" },
   ];
 
   return (

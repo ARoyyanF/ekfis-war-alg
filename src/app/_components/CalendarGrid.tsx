@@ -169,9 +169,9 @@ export default function CalendarGrid({
     const cellAvailability = userAvailability[key] || {};
 
     // Check if any type is selected for this cell
-    if (cellAvailability.available) return AVAILABILITY_TYPES.available.color;
-    if (cellAvailability.leisure) return AVAILABILITY_TYPES.leisure.color;
-    if (cellAvailability.busy) return AVAILABILITY_TYPES.busy.color;
+    if (cellAvailability.leastCompromisable) return AVAILABILITY_TYPES.leastCompromisable.color;
+    if (cellAvailability.highPriority) return AVAILABILITY_TYPES.highPriority.color;
+    if (cellAvailability.mediumPriority) return AVAILABILITY_TYPES.mediumPriority.color;
 
     return "bg-gray-200";
   };
