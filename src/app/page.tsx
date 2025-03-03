@@ -32,13 +32,14 @@ import { useRouter } from "next/navigation";
 //   );
 // }
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import CalendarGrid from "./_components/CalendarGrid";
 import UserInput from "./_components/UserInput";
 import Results from "./_components/Results";
 
 import AvailabilityTypeSelector from "./_components/AvailabilityTypeSelector";
 import { UploadButton } from "~/utils/uploadthing";
+import Legend from "./_components/Legend";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 const TIMES: string[] = [];
@@ -107,38 +108,44 @@ export default function Home() {
     });
   };
 
+  const availabilityQuantified = useMemo(() => {
+    const numMediumPriority = Object.values(availability)
+      .flat()
+      .filter((cellAvailability) => cellAvailability.mediumPriority).length;
+    const mediumPriorityWeight = Math.min(1, 1 - numMediumPriority / 10);
+    return Object.fromEntries(
+      Object.entries(availability).map(([key, cellAvailability]) => {
+        const weighted = Object.entries(cellAvailability).reduce(
+          (acc, [type, count]) => {
+            switch (type) {
+              case "leastCompromisable":
+                return acc + count * 3;
+              case "highPriority":
+                return acc + count * 2;
+              case "mediumPriority":
+                return acc + count * mediumPriorityWeight;
+              default:
+                return acc;
+            }
+          },
+          0,
+        );
+        return [key, weighted];
+      }),
+    );
+  }, [availability]);
+
   return (
     <main className="container mx-auto p-4">
       <h1 className="mb-4 text-3xl font-bold">When2Meet Clone</h1>
       <UserInput username={username} setUsername={setUsername} />
+      <p>{username}</p>
       <AvailabilityTypeSelector
         selectedType={selectedType}
         onTypeChange={setSelectedType}
       />
-      <div className="mb-6 mt-6">
-        <h3 className="mb-2 text-lg font-semibold">Legend</h3>
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 bg-red-500"></div>
-            <span>Least compromisable</span>
-            <span className="italic text-gray-400">Matkul wajib, kerja</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 bg-blue-500"></div>
-            <span>High priority</span>
-            <span className="italic text-gray-400">
-              Matkul pilihan, magang, MBKM{" "}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="h-4 w-4 bg-green-500"></div>
-            <span>Medium priority</span>
-            <span className="italic text-gray-400">
-              Agenda lain yang bisa digeser
-            </span>
-          </div>
-        </div>
-      </div>
+      <Legend />
+
       <CalendarGrid
         days={DAYS}
         times={TIMES}
@@ -161,7 +168,11 @@ export default function Home() {
       </Button>
 
       <pre>{JSON.stringify(availability, null, 2)}</pre>
-      <Results days={DAYS} times={TIMES} availability={availability} />
+      <Results
+        days={DAYS}
+        times={TIMES}
+        availability={availabilityQuantified}
+      />
       <EventForm username={username} availability={availability} />
     </main>
   );
