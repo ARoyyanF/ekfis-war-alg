@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-, "src/server/db/schema.ts.old", "src/app/page.tsx.old.tsx"  ],
+, "src/server/db/schema.ts.old", "src/app/page.tsx.old.tsx", "src/server/api/routers/image.ts.old"  ],
   "exclude": ["node_modules"]
 }
