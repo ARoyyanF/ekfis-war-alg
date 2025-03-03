@@ -6,6 +6,7 @@ import {
   primaryKey,
   serial,
   text,
+  json,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -24,6 +25,8 @@ export const mahasiswas = createTable("mahasiswa", {
   nim: integer("nim").primaryKey().notNull(),
   name: varchar("name", { length: 256 }).notNull(),
   authId: varchar("auth_id", { length: 512 }),
+  availability: json("schedule"),
+  availabilityQuantified: json("availability_Quantified"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -32,14 +35,10 @@ export const mahasiswas = createTable("mahasiswa", {
   ),
 });
 
-export const images = createTable("image", {
-  id: serial("id").primaryKey(),
-  userId: varchar("user_id", { length: 256 })
-    .notNull()
-    .default("default_user_id"),
-  name: varchar("name", { length: 256 }).notNull(),
-  url: varchar("url", { length: 1024 }).notNull(),
-  key: varchar("key", { length: 1024 }).notNull(),
+export const groups = createTable("group", {
+  groupNumber: integer("group_number").primaryKey(),
+  membersNim: integer("members_nim").array(),
+  groupAvailabilityQuantified: json("group_availability_Quantified"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
