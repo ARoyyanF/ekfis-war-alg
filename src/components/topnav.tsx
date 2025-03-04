@@ -18,7 +18,7 @@ export function TopNav() {
   const unbindNimWithUser =
     api.authorization.unbindNimWithRegisteredUser.useMutation();
   const mahasiswaData = api.authorization.getMahasiswaData.useQuery(undefined, {
-    enabled: isSignedIn,
+    enabled: isSignedIn === true,
   });
 
   return (
