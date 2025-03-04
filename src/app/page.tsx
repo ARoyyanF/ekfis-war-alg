@@ -1,6 +1,6 @@
 "use client";
 
-import { api, HydrateClient } from "~/trpc/server";
+// import { api, HydrateClient } from "~/trpc/server";
 import { auth } from "@clerk/nextjs/server";
 
 import TestAuth from "./_components/test-auth";
@@ -31,6 +31,8 @@ import { useRouter } from "next/navigation";
 //     </HydrateClient>
 //   );
 // }
+
+import { api } from "~/trpc/react";
 
 import { useState, useEffect, useMemo } from "react";
 import CalendarGrid from "./_components/CalendarGrid";
@@ -65,6 +67,8 @@ export const AVAILABILITY_TYPES = {
 };
 
 export default function Home() {
+  const seedMahasiswa = api.seed.mahasiswa.useMutation();
+
   const router = useRouter();
   const [availability, setAvailability] = useState<{
     [key: string]: { [type: string]: number };
@@ -165,6 +169,10 @@ export default function Home() {
         }}
       >
         Reset
+      </Button>
+
+      <Button onClick={async () => await seedMahasiswa.mutateAsync()}>
+        seed mahasiswas
       </Button>
 
       <pre>{JSON.stringify(availability, null, 2)}</pre>
