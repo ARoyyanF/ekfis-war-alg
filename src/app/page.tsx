@@ -6,7 +6,6 @@ import { auth } from "@clerk/nextjs/server";
 import TestAuth from "./_components/test-auth";
 import { SignedIn } from "@clerk/nextjs";
 import { NimForm } from "./_components/nimForm";
-import { Button } from "~/components/ui/button";
 
 // export default async function HomePage() {
 //   const session = await api.authorization.currentSession();
@@ -55,7 +54,11 @@ export const AVAILABILITY_TYPES = {
     color: "bg-blue-500",
     resultColor: "rgba(0, 0, 255, ",
   },
-  mediumPriority: { label: "mediumPriority", color: "bg-green-500", resultColor: "rgba(255, 0, 0, " },
+  mediumPriority: {
+    label: "mediumPriority",
+    color: "bg-green-500",
+    resultColor: "rgba(255, 0, 0, ",
+  },
 };
 
 export default function Home() {
@@ -64,7 +67,8 @@ export default function Home() {
     [key: string]: { [type: string]: number };
   }>({});
   const [username, setUsername] = useState<string>("");
-  const [selectedType, setSelectedType] = useState<string>("leastCompromisable");
+  const [selectedType, setSelectedType] =
+    useState<string>("leastCompromisable");
 
   useEffect(() => {
     const storedAvailability = localStorage.getItem("availability");
@@ -109,23 +113,27 @@ export default function Home() {
         selectedType={selectedType}
         onTypeChange={setSelectedType}
       />
-      <div className="mt-6 mb-6">
+      <div className="mb-6 mt-6">
         <h3 className="mb-2 text-lg font-semibold">Legend</h3>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 bg-red-500"></div>
             <span>Least compromisable</span>
-            <span className="text-gray-400 italic">Matkul wajib, kerja</span>
+            <span className="italic text-gray-400">Matkul wajib, kerja</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 bg-blue-500"></div>
             <span>High priority</span>
-            <span className="text-gray-400 italic">Matkul pilihan, magang, MBKM </span>
+            <span className="italic text-gray-400">
+              Matkul pilihan, magang, MBKM{" "}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 bg-green-500"></div>
             <span>Medium priority</span>
-            <span className="text-gray-400 italic">Agenda lain yang bisa digeser</span>
+            <span className="italic text-gray-400">
+              Agenda lain yang bisa digeser
+            </span>
           </div>
         </div>
       </div>
@@ -145,7 +153,7 @@ export default function Home() {
       >
         Reset
       </Button>
-      
+
       <pre>{JSON.stringify(availability, null, 2)}</pre>
       <Results days={DAYS} times={TIMES} availability={availability} />
     </main>
