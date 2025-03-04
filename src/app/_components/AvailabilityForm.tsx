@@ -8,9 +8,10 @@ import { Label } from "~/components/ui/label";
 import { useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 
-interface EventFormProps {
+interface AvailabilityFormProps {
   groupNum: number | undefined;
   availability: { [key: string]: { [type: string]: number } };
+  nim: number | undefined;
 }
 
 type FormValues = {
@@ -19,10 +20,11 @@ type FormValues = {
   leastCompromisableProof: string;
 };
 
-export default function EventForm({
+export default function AvailabilityForm({
   groupNum = undefined,
   availability,
-}: EventFormProps) {
+  nim,
+}: AvailabilityFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -44,6 +46,7 @@ export default function EventForm({
     console.log("Form submitted with:", {
       ...data,
       availability,
+      nim,
     });
 
     setIsSubmitting(false);
@@ -82,12 +85,13 @@ export default function EventForm({
           <Input
             id="groupNumber"
             placeholder="01"
+            // message="Nomor Kelompok wajib diisi"
             {...register("groupNumber", {
               required: "Nomor Kelompok wajib diisi",
             })}
           />
           {errors.groupNumber && (
-            <p className="text-red-500 text-sm">{errors.eventName.message}</p>
+            <p className="text-red-500 text-sm">{errors.groupNumber.message}</p>
           )}
         </div>
 
@@ -98,7 +102,7 @@ export default function EventForm({
           <Textarea
             id="highPriorityDescription"
             placeholder="Contoh: selama 3 minggu ke depan, saya memiliki komitmen untuk mengikuti program magang pada perusahaan [...], selain itu saya juga mengikuti MBKM [...] sampai [...] dan mengambil mata kuliah pilihan [...] yang mana kuliahnya diselenggarakan pada jadwal [...]. Selain itu, kesibukan-kesibukan ini membutuhkan fokus dan waktu ekstra khusus terutama pada hari [...] dari jam [...] sampai [...] karena [...] sehingga saya lebih berkenan apabila tidak mendapatkan jadwal ekfis di jam-jam tersebut"
-            {...register("description")}
+            {...register("highPriorityDescription")}
           />
         </div>
 
@@ -109,14 +113,16 @@ export default function EventForm({
           <Textarea
             id="leastCompromisableProof"
             placeholder="Contoh: <link screenshot KSM & jadwal SIX> <link surat keterangan kerja>"
-            {...register("description")}
+            {...register("leastCompromisableProof")}
           />
           <p className="text-red-500 text-sm">
             Bukti hanya dianggap sah apabila dapat diakses oleh kami. (tip:
             paste linknya ke tab incognito, kalo bisa dibuka berarti aman 👍)
           </p>
-          {errors.name && (
-            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          {errors.leastCompromisableProof && (
+            <p className="text-red-500 text-sm">
+              {errors.leastCompromisableProof.message}
+            </p>
           )}
         </div>
 
