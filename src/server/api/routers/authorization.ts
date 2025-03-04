@@ -25,6 +25,9 @@ export const authorizationRouter = createTRPCRouter({
     const registeredMahasiswa = await db.query.mahasiswas.findFirst({
       where: (model, { eq }) => eq(model.authId, ctx.auth.userId),
     });
+    if (!registeredMahasiswa) {
+      return null;
+    }
     return registeredMahasiswa;
   }),
   bindNimWithUser: protectedProcedure
