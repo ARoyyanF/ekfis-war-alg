@@ -6,8 +6,6 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { UploadButton } from "~/utils/uploadthing";
 import { api } from "~/trpc/react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
@@ -24,10 +22,6 @@ export function TopNav() {
   return (
     <nav className="flex w-full items-center justify-between border-b-4 p-4 text-xl font-semibold">
       <div>TopNav</div>
-      {/* <UploadButton
-        endpoint="imageUploader"
-        onClientUploadComplete={() => router.refresh()}
-      /> */}
       <div>EGGFISH WAR ALGORITHM RAAAAH </div>
       <div className="flex flex-row items-center justify-center gap-4">
         <SignedOut>
@@ -38,8 +32,8 @@ export function TopNav() {
             <div className="flex flex-row items-center gap-4">
               {/* <span>Logged in as {user?.fullName}</span> */}
               <div className="flex flex-col text-right">
-                <p>{mahasiswaData?.data?.name}</p>
-                <p>{mahasiswaData?.data?.nim}</p>
+                <p>{mahasiswaData.data.name}</p>
+                <p>{mahasiswaData.data.nim}</p>
               </div>
               <Button
                 type="button"
