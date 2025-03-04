@@ -9,18 +9,20 @@ import { useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 
 interface EventFormProps {
-  username: string;
+  groupNum: number | undefined;
   availability: { [key: string]: { [type: string]: number } };
 }
 
 type FormValues = {
-  eventName: string;
-  description: string;
-  name: string;
-  email: string;
+  groupNumber: number;
+  highPriorityDescription: string;
+  leastCompromisableProof: string;
 };
 
-export default function EventForm({ username, availability }: EventFormProps) {
+export default function EventForm({
+  groupNum = undefined,
+  availability,
+}: EventFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -29,9 +31,7 @@ export default function EventForm({ username, availability }: EventFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: {
-      name: username,
-    },
+    defaultValues: { groupNumber: groupNum },
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -55,10 +55,11 @@ export default function EventForm({ username, availability }: EventFormProps) {
       <div className="bg-green-50 border border-green-200 rounded-md p-4 mt-8">
         <div className="flex items-center gap-2 text-green-600 mb-2">
           <Check size={20} />
-          <h3 className="font-medium">Availability Submitted Successfully!</h3>
+          <h3 className="font-medium">Kesibukan tersubmit</h3>
         </div>
         <p className="text-green-700">
-          Your availability has been saved. Thank you for your submission.
+          Terimakasih, kesibukan Anda telah tersubmit. Bobot kesibukan kelompok
+          dapat dilihat dibawah.
         </p>
         <Button
           className="mt-4"
@@ -73,43 +74,53 @@ export default function EventForm({ username, availability }: EventFormProps) {
 
   return (
     <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
-      <h2 className="text-xl font-bold mb-4">Submit Your Availability</h2>
+      <h2 className="text-xl font-bold mb-4">Submit kesibukan</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="eventName">Event Name</Label>
+          <Label htmlFor="groupNumber">Nomor Kelompok</Label>
           <Input
-            id="eventName"
-            placeholder="Team Meeting"
-            {...register("eventName", { required: "Event name is required" })}
+            id="groupNumber"
+            placeholder="01"
+            {...register("groupNumber", {
+              required: "Nomor Kelompok wajib diisi",
+            })}
           />
-          {errors.eventName && (
+          {errors.groupNumber && (
             <p className="text-red-500 text-sm">{errors.eventName.message}</p>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="description">Description (Optional)</Label>
+          <Label htmlFor="highPriorityDescription">
+            Penjelasan kegiatan high priority
+          </Label>
           <Textarea
-            id="description"
-            placeholder="Weekly team sync to discuss project progress..."
+            id="highPriorityDescription"
+            placeholder="Contoh: selama 3 minggu ke depan, saya memiliki komitmen untuk mengikuti program magang pada perusahaan [...], selain itu saya juga mengikuti MBKM [...] sampai [...] dan mengambil mata kuliah pilihan [...] yang mana kuliahnya diselenggarakan pada jadwal [...]. Selain itu, kesibukan-kesibukan ini membutuhkan fokus dan waktu ekstra khusus terutama pada hari [...] dari jam [...] sampai [...] karena [...] sehingga saya lebih berkenan apabila tidak mendapatkan jadwal ekfis di jam-jam tersebut"
             {...register("description")}
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="name">Your Name</Label>
-          <Input
-            id="name"
-            placeholder="John Doe"
-            {...register("name", { required: "Your name is required" })}
+          <Label htmlFor="leastCompromisableProof">
+            Link bukti untuk kategori Least Compromisable
+          </Label>
+          <Textarea
+            id="leastCompromisableProof"
+            placeholder="Contoh: <link screenshot KSM & jadwal SIX> <link surat keterangan kerja>"
+            {...register("description")}
           />
+          <p className="text-red-500 text-sm">
+            Bukti hanya dianggap sah apabila dapat diakses oleh kami. (tip:
+            paste linknya ke tab incognito, kalo bisa dibuka berarti aman 👍)
+          </p>
           {errors.name && (
             <p className="text-red-500 text-sm">{errors.name.message}</p>
           )}
         </div>
 
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -126,7 +137,7 @@ export default function EventForm({ username, availability }: EventFormProps) {
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email.message}</p>
           )}
-        </div>
+        </div> */}
 
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? (
@@ -135,7 +146,7 @@ export default function EventForm({ username, availability }: EventFormProps) {
               Submitting...
             </>
           ) : (
-            "Submit Availability"
+            "Submit"
           )}
         </Button>
       </form>

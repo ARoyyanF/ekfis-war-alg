@@ -11,7 +11,11 @@ export default function Results({ days, times, availability }: ResultsProps) {
 
   return (
     <div>
-      <h2 className="mb-4 text-2xl font-bold">Combined Availability</h2>
+      <h2 className=" text-2xl font-bold">Bobot kesibukan</h2>
+      <p className="font-semibold pb-4">
+        Semakin besar bobot, semakin kecil kemungkinan kelompok kalian
+        mendapatkan jadwal tersebut
+      </p>
       <div className="grid grid-cols-[auto,repeat(5,1fr)] gap-1">
         <div className="font-bold">Time</div>
         {days.map((day) => (
@@ -29,7 +33,7 @@ export default function Results({ days, times, availability }: ResultsProps) {
                 <div
                   key={`${day}-${time}`}
                   className="border p-2"
-                  style={{ backgroundColor: `rgba(0, 128, 0, ${intensity})` }}
+                  style={{ backgroundColor: `rgba(128, 0, 0, ${intensity})` }}
                 >
                   {count > 0 && count}
                 </div>

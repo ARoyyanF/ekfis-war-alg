@@ -7,7 +7,7 @@ import TestAuth from "./_components/test-auth";
 import { SignedIn } from "@clerk/nextjs";
 import { NimForm } from "./_components/nimForm";
 import { Button } from "~/components/ui/button";
-import EventForm from "./_components/EventForm";
+import AvailabilityForm from "./_components/AvailabilityForm";
 import { useRouter } from "next/navigation";
 
 // export default async function HomePage() {
@@ -141,25 +141,35 @@ export default function Home() {
 
   return (
     <main className="container mx-auto p-4">
-      <h1 className="mb-4 text-3xl font-bold">When2Meet Clone</h1>
-      <UserInput username={username} setUsername={setUsername} />
-      <p>{username}</p>
-      <AvailabilityTypeSelector
-        selectedType={selectedType}
-        onTypeChange={setSelectedType}
-      />
-      <Legend />
+      <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
+        <h1 className="mb-4 text-3xl font-bold">Pendataan Kesibukan</h1>
+        {/* <UserInput username={username} setUsername={setUsername} />
+      <p>{username}</p> */}
 
-      <CalendarGrid
-        days={DAYS}
-        times={TIMES}
-        initialUserAvailability={{}}
-        onAvailabilityChange={handleAvailabilityChange}
-        selectedType={selectedType}
-      />
-      <UploadButton
+        <AvailabilityTypeSelector
+          selectedType={selectedType}
+          onTypeChange={setSelectedType}
+        />
+        <Legend />
+
+        <CalendarGrid
+          days={DAYS}
+          times={TIMES}
+          initialUserAvailability={{}}
+          onAvailabilityChange={handleAvailabilityChange}
+          selectedType={selectedType}
+        />
+      </div>
+      {/* <UploadButton
         endpoint="buktiUploader"
         onClientUploadComplete={() => router.refresh()}
+      /> */}
+
+      <AvailabilityForm groupNum={undefined} availability={availability} />
+      <Results
+        days={DAYS}
+        times={TIMES}
+        availability={availabilityQuantified}
       />
       <Button
         onClick={() => {
@@ -176,12 +186,6 @@ export default function Home() {
       </Button>
 
       <pre>{JSON.stringify(availability, null, 2)}</pre>
-      <Results
-        days={DAYS}
-        times={TIMES}
-        availability={availabilityQuantified}
-      />
-      <EventForm username={username} availability={availability} />
     </main>
   );
 }
