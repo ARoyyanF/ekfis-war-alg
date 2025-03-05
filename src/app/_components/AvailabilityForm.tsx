@@ -7,10 +7,12 @@ import { Textarea } from "~/components/ui/textarea";
 import { Label } from "~/components/ui/label";
 import { useState } from "react";
 import { Check, Loader2 } from "lucide-react";
+import { api } from "~/trpc/react";
 
 interface AvailabilityFormProps {
   groupNum: number | undefined;
   availability: { [key: string]: { [type: string]: number } };
+  availabilityQuantified: { [key: string]: number };
   nim: number | undefined;
 }
 
@@ -23,10 +25,14 @@ type FormValues = {
 export default function AvailabilityForm({
   groupNum = undefined,
   availability,
+  availabilityQuantified,
   nim,
 }: AvailabilityFormProps) {
+  const submitToDb = api.backend.submitToDb.useMutation();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const trpcClient = api.useContext();
 
   const {
     register,
@@ -40,14 +46,32 @@ export default function AvailabilityForm({
     setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const result = await submitToDb.mutateAsync({
+        groupNumber: Number(data.groupNumber),
+        highPriorityDescription: data.highPriorityDescription,
+        leastCompromisableProof: data.leastCompromisableProof,
+        availability,
+        availabilityQuantified,
+        nim,
+      });
+      // api.backend.getGroupAvailabilityQuantified.invalidate();
+      await trpcClient.invalidate();
+
+      console.log(result.message);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
 
     // Here you would typically send the data to your backend
-    console.log("Form submitted with:", {
-      ...data,
-      availability,
-      nim,
-    });
+    // console.log("Form submitted with:", {
+    //   ...data,
+    //   availability,
+    //   availabilityQuantified,
+    //   nim,
+    // });
 
     setIsSubmitting(false);
     setIsSubmitted(true);
@@ -69,7 +93,7 @@ export default function AvailabilityForm({
           variant="outline"
           onClick={() => setIsSubmitted(false)}
         >
-          Submit Another Response
+          Ubah data
         </Button>
       </div>
     );
@@ -82,14 +106,28 @@ export default function AvailabilityForm({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="groupNumber">Nomor Kelompok</Label>
-          <Input
+          <select
+            id="groupNumber"
+            {...register("groupNumber", {
+              required: "Nomor Kelompok wajib diisi",
+            })}
+            className="border p-2 ml-2 rounded-lg"
+          >
+            <option value="">No. kelompok</option>
+            {Array.from({ length: 30 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+          {/* <Input
             id="groupNumber"
             placeholder="01"
             // message="Nomor Kelompok wajib diisi"
             {...register("groupNumber", {
               required: "Nomor Kelompok wajib diisi",
             })}
-          />
+          /> */}
           {errors.groupNumber && (
             <p className="text-red-500 text-sm">{errors.groupNumber.message}</p>
           )}

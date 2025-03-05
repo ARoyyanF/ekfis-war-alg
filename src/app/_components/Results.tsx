@@ -1,13 +1,21 @@
 import React from "react";
+import { api } from "~/trpc/react";
 
 interface ResultsProps {
   days: string[];
   times: string[];
-  availability: { [key: string]: number };
+  // availabilityQuantified: { [key: string]: number };
 }
 
-export default function Results({ days, times, availability }: ResultsProps) {
-  const maxAvailability = Math.max(...Object.values(availability));
+export default function Results({
+  days,
+  times,
+  // availabilityQuantified,
+}: ResultsProps) {
+  const { data: availabilityQuantified = {} } =
+    api.backend.getGroupAvailabilityQuantified.useQuery();
+
+  const maxAvailability = Math.max(...Object.values(availabilityQuantified));
 
   return (
     <div>
@@ -16,6 +24,7 @@ export default function Results({ days, times, availability }: ResultsProps) {
         Semakin besar bobot, semakin kecil kemungkinan kelompok kalian
         mendapatkan jadwal tersebut
       </p>
+      <p>{JSON.stringify(availabilityQuantified, null, 2)}</p>
       <div className="grid grid-cols-[auto,repeat(5,1fr)] gap-1">
         <div className="font-bold">Time</div>
         {days.map((day) => (
@@ -27,7 +36,7 @@ export default function Results({ days, times, availability }: ResultsProps) {
           <React.Fragment key={time}>
             <div className="font-bold">{time}</div>
             {days.map((day) => {
-              const count = availability[`${day}-${time}`] || 0;
+              const count = availabilityQuantified[`${day}-${time}`] || 0;
               const intensity = count / maxAvailability;
               return (
                 <div

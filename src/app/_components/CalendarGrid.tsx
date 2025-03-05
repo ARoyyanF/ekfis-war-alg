@@ -6,7 +6,7 @@ import { AVAILABILITY_TYPES } from "../page";
 interface CalendarGridProps {
   days: string[];
   times: string[];
-  initialUserAvailability?: { [key: string]: { [type: string]: boolean } };
+  initialUserAvailability?: { [key: string]: { [type: string]: number } };
   onAvailabilityChange: (
     day: string,
     time: string,
@@ -30,8 +30,23 @@ export default function CalendarGrid({
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setUserAvailability(initialUserAvailability);
-  }, []);
+    const convertedAvailability = Object.fromEntries(
+      Object.entries(initialUserAvailability || {}).map(([key, value]) => [
+        key,
+        Object.fromEntries(
+          Object.entries(value).map(([type, availability]) => [
+            type,
+            Boolean(availability),
+          ]),
+        ),
+      ]),
+    );
+    setUserAvailability(convertedAvailability);
+  }, [initialUserAvailability]);
+
+  // useEffect(() => {
+  //   setUserAvailability(initialUserAvailability);
+  // }, []);
 
   const handleCellInteraction = useCallback(
     (day: string, time: string) => {
@@ -169,9 +184,12 @@ export default function CalendarGrid({
     const cellAvailability = userAvailability[key] || {};
 
     // Check if any type is selected for this cell
-    if (cellAvailability.leastCompromisable) return AVAILABILITY_TYPES.leastCompromisable.color;
-    if (cellAvailability.highPriority) return AVAILABILITY_TYPES.highPriority.color;
-    if (cellAvailability.mediumPriority) return AVAILABILITY_TYPES.mediumPriority.color;
+    if (cellAvailability.leastCompromisable)
+      return AVAILABILITY_TYPES.leastCompromisable.color;
+    if (cellAvailability.highPriority)
+      return AVAILABILITY_TYPES.highPriority.color;
+    if (cellAvailability.mediumPriority)
+      return AVAILABILITY_TYPES.mediumPriority.color;
 
     return "bg-gray-200";
   };
@@ -185,6 +203,7 @@ export default function CalendarGrid({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      <div>{JSON.stringify(userAvailability, null, 2)}</div>
       <div className="grid grid-cols-[auto,repeat(5,1fr)] gap-1">
         <div className="font-bold">Time</div>
         {days.map((day) => (

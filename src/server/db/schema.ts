@@ -25,8 +25,12 @@ export const mahasiswas = createTable("mahasiswa", {
   nim: integer("nim").primaryKey().notNull(),
   name: varchar("name", { length: 256 }).notNull(),
   authId: varchar("auth_id", { length: 512 }),
+  groupNumber: integer("group_number"),
   availability: json("schedule"),
   availabilityQuantified: json("availability_Quantified"),
+  leastCompromisableProof: json("least_compromisable_proof"),
+  highPriorityDescription: json("high_priority_description"),
+
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

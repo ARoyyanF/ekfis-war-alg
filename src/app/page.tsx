@@ -36,11 +36,11 @@ import { api } from "~/trpc/react";
 
 import { useState, useEffect, useMemo } from "react";
 import CalendarGrid from "./_components/CalendarGrid";
-import UserInput from "./_components/UserInput";
+// import UserInput from "./_components/UserInput";
 import Results from "./_components/Results";
 
 import AvailabilityTypeSelector from "./_components/AvailabilityTypeSelector";
-import { UploadButton } from "~/utils/uploadthing";
+// import { UploadButton } from "~/utils/uploadthing";
 import Legend from "./_components/Legend";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -81,12 +81,18 @@ export default function Home() {
   const [selectedType, setSelectedType] =
     useState<string>("leastCompromisable");
 
+  // useEffect(() => {
+  //   const storedAvailability = localStorage.getItem("availability");
+  //   if (storedAvailability) {
+  //     setAvailability(JSON.parse(storedAvailability));
+  //   }
+  // }, []);
   useEffect(() => {
-    const storedAvailability = localStorage.getItem("availability");
-    if (storedAvailability) {
-      setAvailability(JSON.parse(storedAvailability));
+    if (mahasiswaData.data) {
+      const availability = mahasiswaData.data.availability;
+      setAvailability(availability);
     }
-  }, []);
+  }, [mahasiswaData.data]);
 
   const handleAvailabilityChange = (
     day: string,
@@ -111,7 +117,7 @@ export default function Home() {
         ...prev,
         [key]: newCellData,
       };
-      localStorage.setItem("availability", JSON.stringify(newAvailability));
+      // localStorage.setItem("availability", JSON.stringify(newAvailability));
       return newAvailability;
     });
   };
@@ -160,7 +166,7 @@ export default function Home() {
               <CalendarGrid
                 days={DAYS}
                 times={TIMES}
-                initialUserAvailability={{}}
+                initialUserAvailability={availability}
                 onAvailabilityChange={handleAvailabilityChange}
                 selectedType={selectedType}
               />
@@ -170,15 +176,16 @@ export default function Home() {
               groupNum={undefined}
               nim={mahasiswaData.data.nim}
               availability={availability}
+              availabilityQuantified={availabilityQuantified}
             />
             <Results
               days={DAYS}
               times={TIMES}
-              availability={availabilityQuantified}
+              // availabilityQuantified={availabilityQuantified}
             />
             <Button
               onClick={() => {
-                localStorage.setItem("availability", "");
+                // localStorage.setItem("availability", "");
                 setAvailability({});
                 router.refresh();
               }}
