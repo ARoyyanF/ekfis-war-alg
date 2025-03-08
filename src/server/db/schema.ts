@@ -26,8 +26,8 @@ export const mahasiswas = createTable("mahasiswa", {
   name: varchar("name", { length: 256 }).notNull(),
   authId: varchar("auth_id", { length: 512 }),
   groupNumber: integer("group_number"),
-  availability: json("schedule"),
-  availabilityQuantified: json("availability_Quantified"),
+  availability: json("schedule").notNull().default({}),
+  availabilityQuantified: json("availability_Quantified").notNull().default({}),
   leastCompromisableProof: json("least_compromisable_proof"),
   highPriorityDescription: json("high_priority_description"),
 
@@ -42,7 +42,9 @@ export const mahasiswas = createTable("mahasiswa", {
 export const groups = createTable("group", {
   groupNumber: integer("group_number").primaryKey(),
   membersNim: integer("members_nim").array(),
-  groupAvailabilityQuantified: json("group_availability_Quantified"),
+  groupAvailabilityQuantified: json("group_availability_Quantified")
+    .notNull()
+    .default({}),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
