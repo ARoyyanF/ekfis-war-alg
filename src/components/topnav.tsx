@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { NimForm } from "~/app/_components/nimForm";
 
 export function TopNav() {
+  const trpcClient = api.useContext();
   const { isSignedIn } = useUser();
   const unbindNimWithUser =
     api.authorization.unbindNimWithRegisteredUser.useMutation();
@@ -47,7 +48,8 @@ export function TopNav() {
                     toast.error("Error: " + JSON.stringify(e));
                   } finally {
                     toast.dismiss(statusToast);
-                    window.location.reload();
+                    await trpcClient.invalidate();
+                    // window.location.reload();
                   }
                 }}
               >

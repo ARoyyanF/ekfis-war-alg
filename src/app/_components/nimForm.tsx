@@ -28,6 +28,7 @@ const formSchema = z.object({
 });
 
 export function NimForm() {
+  const trpcClient = api.useContext();
   const bindNimWithUser = api.authorization.bindNimWithUser.useMutation();
 
   // 1. Define your form.
@@ -52,7 +53,8 @@ export function NimForm() {
       bindNimWithUserReturn = await bindNimWithUser.mutateAsync({ nim });
       toast.info(bindNimWithUserReturn?.message);
       if (bindNimWithUserReturn?.isOk) {
-        window.location.reload();
+        // window.location.reload();
+        await trpcClient.invalidate();
       }
     } catch (e) {
       toast.error("Error: " + JSON.stringify(e));

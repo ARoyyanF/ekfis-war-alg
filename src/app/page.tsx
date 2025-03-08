@@ -4,7 +4,7 @@
 import { auth } from "@clerk/nextjs/server";
 
 import TestAuth from "./_components/test-auth";
-import { SignedIn } from "@clerk/nextjs";
+import { SignedIn, useUser } from "@clerk/nextjs";
 import { NimForm } from "./_components/nimForm";
 import { Button } from "~/components/ui/button";
 import AvailabilityForm from "./_components/AvailabilityForm";
@@ -36,11 +36,11 @@ import { api } from "~/trpc/react";
 
 import { useState, useEffect, useMemo } from "react";
 import CalendarGrid from "./_components/CalendarGrid";
-import UserInput from "./_components/UserInput";
+// import UserInput from "./_components/UserInput";
 import Results from "./_components/Results";
 
 import AvailabilityTypeSelector from "./_components/AvailabilityTypeSelector";
-import { UploadButton } from "~/utils/uploadthing";
+// import { UploadButton } from "~/utils/uploadthing";
 import Legend from "./_components/Legend";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -67,6 +67,10 @@ export const AVAILABILITY_TYPES = {
 };
 
 export default function Home() {
+  const { isSignedIn } = useUser();
+  const mahasiswaData = api.authorization.getMahasiswaData.useQuery(undefined, {
+    enabled: isSignedIn === true,
+  });
   const seedMahasiswa = api.seed.mahasiswa.useMutation();
 
   const router = useRouter();
@@ -77,12 +81,18 @@ export default function Home() {
   const [selectedType, setSelectedType] =
     useState<string>("leastCompromisable");
 
+  // useEffect(() => {
+  //   const storedAvailability = localStorage.getItem("availability");
+  //   if (storedAvailability) {
+  //     setAvailability(JSON.parse(storedAvailability));
+  //   }
+  // }, []);
   useEffect(() => {
-    const storedAvailability = localStorage.getItem("availability");
-    if (storedAvailability) {
-      setAvailability(JSON.parse(storedAvailability));
+    if (mahasiswaData.data) {
+      const availability = mahasiswaData.data.availability;
+      setAvailability(availability);
     }
-  }, []);
+  }, [mahasiswaData.data]);
 
   const handleAvailabilityChange = (
     day: string,
@@ -107,7 +117,7 @@ export default function Home() {
         ...prev,
         [key]: newCellData,
       };
-      localStorage.setItem("availability", JSON.stringify(newAvailability));
+      // localStorage.setItem("availability", JSON.stringify(newAvailability));
       return newAvailability;
     });
   };
@@ -140,52 +150,57 @@ export default function Home() {
   }, [availability]);
 
   return (
-    <main className="container mx-auto p-4">
-      <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
-        <h1 className="mb-4 text-3xl font-bold">Pendataan Kesibukan</h1>
-        {/* <UserInput username={username} setUsername={setUsername} />
-      <p>{username}</p> */}
+    <div className="container mx-auto p-4">
+      <SignedIn>
+        {mahasiswaData.data && (
+          <div>
+            <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
+              <h1 className="mb-4 text-3xl font-bold">Pendataan Kesibukan</h1>
 
-        <AvailabilityTypeSelector
-          selectedType={selectedType}
-          onTypeChange={setSelectedType}
-        />
-        <Legend />
+              <AvailabilityTypeSelector
+                selectedType={selectedType}
+                onTypeChange={setSelectedType}
+              />
+              <Legend />
 
-        <CalendarGrid
-          days={DAYS}
-          times={TIMES}
-          initialUserAvailability={{}}
-          onAvailabilityChange={handleAvailabilityChange}
-          selectedType={selectedType}
-        />
-      </div>
-      {/* <UploadButton
-        endpoint="buktiUploader"
-        onClientUploadComplete={() => router.refresh()}
-      /> */}
+              <CalendarGrid
+                days={DAYS}
+                times={TIMES}
+                initialUserAvailability={availability}
+                onAvailabilityChange={handleAvailabilityChange}
+                selectedType={selectedType}
+              />
+            </div>
 
-      <AvailabilityForm groupNum={undefined} availability={availability} />
-      <Results
-        days={DAYS}
-        times={TIMES}
-        availability={availabilityQuantified}
-      />
-      <Button
-        onClick={() => {
-          localStorage.setItem("availability", "");
-          setAvailability({});
-          router.refresh();
-        }}
-      >
-        Reset
-      </Button>
+            <AvailabilityForm
+              groupNum={undefined}
+              nim={mahasiswaData.data.nim}
+              availability={availability}
+              availabilityQuantified={availabilityQuantified}
+            />
+            <Results
+              days={DAYS}
+              times={TIMES}
+              // availabilityQuantified={availabilityQuantified}
+            />
+            <Button
+              onClick={() => {
+                // localStorage.setItem("availability", "");
+                setAvailability({});
+                router.refresh();
+              }}
+            >
+              Reset
+            </Button>
+          </div>
+        )}
+      </SignedIn>
 
       <Button onClick={async () => await seedMahasiswa.mutateAsync()}>
         seed mahasiswas
       </Button>
 
       <pre>{JSON.stringify(availability, null, 2)}</pre>
-    </main>
+    </div>
   );
 }
