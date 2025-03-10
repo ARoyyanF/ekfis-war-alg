@@ -272,12 +272,12 @@ export const backendRouter = createTRPCRouter({
         // 7. Prepare header row with days as columns
         const headerRow = [
           "Time", // Column for time slots
-          "", // Empty column as separator
           "Mon",
           "Tue",
           "Wed",
           "Thu",
           "Fri",
+          "", // Empty column as separator
         ];
 
         // 8. Parse availabilityKeys to extract days and times
