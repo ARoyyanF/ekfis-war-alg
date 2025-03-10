@@ -126,7 +126,7 @@ export default function Home() {
     const numMediumPriority = Object.values(availability)
       .flat()
       .filter((cellAvailability) => cellAvailability.mediumPriority).length;
-    const mediumPriorityWeight = Math.min(1, 1 - numMediumPriority / 10);
+    const mediumPriorityWeight = Math.max(0, 2 - numMediumPriority / 10);
     return Object.fromEntries(
       Object.entries(availability).map(([key, cellAvailability]) => {
         const weighted = Object.entries(cellAvailability).reduce(
