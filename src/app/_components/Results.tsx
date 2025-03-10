@@ -18,13 +18,13 @@ export default function Results({
   const maxAvailability = Math.max(...Object.values(availabilityQuantified));
 
   return (
-    <div>
+    <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
       <h2 className=" text-2xl font-bold">Bobot kesibukan</h2>
       <p className="font-semibold pb-4">
         Semakin besar bobot, semakin kecil kemungkinan kelompok kalian
         mendapatkan jadwal tersebut
       </p>
-      <p>{JSON.stringify(availabilityQuantified, null, 2)}</p>
+      {/* <p>{JSON.stringify(availabilityQuantified, null, 2)}</p> */}
       <div className="grid grid-cols-[auto,repeat(5,1fr)] gap-1">
         <div className="font-bold">Time</div>
         {days.map((day) => (

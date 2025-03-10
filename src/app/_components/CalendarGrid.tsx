@@ -203,7 +203,7 @@ export default function CalendarGrid({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div>{JSON.stringify(userAvailability, null, 2)}</div>
+      {/* <div>{JSON.stringify(userAvailability, null, 2)}</div> */}
       <div className="grid grid-cols-[auto,repeat(5,1fr)] gap-1">
         <div className="font-bold">Time</div>
         {days.map((day) => (

@@ -183,7 +183,7 @@ export default function Home() {
               times={TIMES}
               // availabilityQuantified={availabilityQuantified}
             />
-            <Button
+            {/* <Button
               onClick={() => {
                 // localStorage.setItem("availability", "");
                 setAvailability({});
@@ -191,16 +191,16 @@ export default function Home() {
               }}
             >
               Reset
-            </Button>
+            </Button> */}
           </div>
         )}
       </SignedIn>
 
-      <Button onClick={async () => await seedMahasiswa.mutateAsync()}>
+      {/* <Button onClick={async () => await seedMahasiswa.mutateAsync()}>
         seed mahasiswas
-      </Button>
+      </Button> */}
 
-      <pre>{JSON.stringify(availability, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(availability, null, 2)}</pre> */}
     </div>
   );
 }

@@ -20,7 +20,7 @@ export default function AvailabilityTypeSelector({
   return (
     <div className="mb-4">
       <p className="mb-2 font-medium">Tipe kesibukan:</p>
-      <div className="flex gap-2">
+      <div className="flex gap-2 overflow-x-auto">
         {availabilityTypes.map((type) => (
           <button
             key={type.id}
