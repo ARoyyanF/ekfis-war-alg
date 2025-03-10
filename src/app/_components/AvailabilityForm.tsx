@@ -117,7 +117,7 @@ export default function AvailabilityForm({
             className="border p-2 ml-2 rounded-lg"
           >
             <option value="">No. kelompok</option>
-            {Array.from({ length: 30 }, (_, i) => (
+            {Array.from({ length: 60 }, (_, i) => (
               <option key={i + 1} value={i + 1}>
                 {i + 1}
               </option>
