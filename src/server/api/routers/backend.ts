@@ -277,7 +277,6 @@ export const backendRouter = createTRPCRouter({
           "Wed",
           "Thu",
           "Fri",
-          "", // Empty column as separator
         ];
 
         // 8. Parse availabilityKeys to extract days and times
@@ -303,7 +302,6 @@ export const backendRouter = createTRPCRouter({
           times.forEach((time) => {
             const timeRow: string[] = [
               time, // Time in first column
-              "", // Empty column as separator
             ];
 
             // Add values for each day
