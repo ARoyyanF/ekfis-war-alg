@@ -56,12 +56,12 @@ export default function AvailabilityForm({
         availabilityQuantified,
         nim,
       });
-      const result2 = await submitDbToSheets.mutateAsync();
+      // const result2 = await submitDbToSheets.mutateAsync();
       // api.backend.getGroupAvailabilityQuantified.invalidate();
       await trpcClient.invalidate();
 
       console.log(result.message);
-      console.log(result2.message);
+      // console.log(result2.message);
     } catch (error) {
       console.error(error);
     } finally {
