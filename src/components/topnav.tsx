@@ -22,7 +22,7 @@ export function TopNav() {
 
   return (
     <nav className="flex w-full items-center justify-between border-b-4 p-4 text-xl font-semibold">
-      <div>TopNav</div>
+      <div>eggfish jelek</div>
       {/* <div>EGGFISH WAR ALGORITHM RAAAAH </div> */}
       <div className="flex flex-row items-center justify-center gap-4">
         <SignedOut>
