@@ -7,15 +7,18 @@ interface ResultsProps {
   // availabilityQuantified: { [key: string]: number };
 }
 
+type AvailabilityQuantified = Record<string, number>;
+
 export default function Results({
   days,
   times,
   // availabilityQuantified,
 }: ResultsProps) {
-  const { data: availabilityQuantified = {} } =
-    api.backend.getGroupAvailabilityQuantified.useQuery();
+  const { data: availabilityQuantified = {} as AvailabilityQuantified } =
+    api.backend.getGroupAvailabilityQuantified.useQuery<AvailabilityQuantified>();
 
-  const maxAvailability = Math.max(...Object.values(availabilityQuantified));
+  const maxAvailability =
+    Math.max(...Object.values(availabilityQuantified)) || 1;
 
   return (
     <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
@@ -36,7 +39,7 @@ export default function Results({
           <React.Fragment key={time}>
             <div className="font-bold">{time}</div>
             {days.map((day) => {
-              const count = availabilityQuantified[`${day}-${time}`] || 0;
+              const count = availabilityQuantified[`${day}-${time}`] ?? 0;
               const intensity = count / maxAvailability;
               return (
                 <div
@@ -44,7 +47,7 @@ export default function Results({
                   className="border p-2"
                   style={{ backgroundColor: `rgba(128, 0, 0, ${intensity})` }}
                 >
-                  {count > 0 && count}
+                  {count > 0 && count.toFixed(2)}
                 </div>
               );
             })}
