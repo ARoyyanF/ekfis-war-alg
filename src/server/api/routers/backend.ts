@@ -292,9 +292,9 @@ export const backendRouter = createTRPCRouter({
 
         // 8. Parse availabilityKeys to extract days and times
         const times = [
-          "7:00",
-          "8:00",
-          "9:00",
+          "07:00",
+          "08:00",
+          "09:00",
           "10:00",
           "11:00",
           "12:00",
