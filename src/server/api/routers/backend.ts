@@ -229,21 +229,7 @@ export const backendRouter = createTRPCRouter({
           updatedAt,
         } = group;
 
-        if (!membersNim || membersNim.length === 0) continue;
-
-        // 5. Get mahasiswa details for each member in the group
-        const groupMembers = await db.query.mahasiswas.findMany({
-          where: (mahasiswas, { inArray }) =>
-            inArray(mahasiswas.nim, membersNim),
-          columns: {
-            nim: true,
-            name: true,
-            highPriorityDescription: true,
-            leastCompromisableProof: true,
-          },
-        });
-
-        // 6. Prepare data for Google Sheets
+        //get sheet name
         const groupNumberStr =
           typeof groupNumber === "number" ? groupNumber.toString() : "Unknown";
         const sheetName = `Group ${groupNumberStr}`;
@@ -268,6 +254,31 @@ export const backendRouter = createTRPCRouter({
           // Sheet might already exist, continue
           console.log(`Sheet ${sheetName} might already exist`);
         }
+
+        //clear the sheet
+        try {
+          await (sheets as any).spreadsheets.values.clear({
+            spreadsheetId,
+            range: `${sheetName}!A1:Z1000`, // Clear a large range to ensure all data is removed
+          });
+        } catch (clearError) {
+          console.error(`Error clearing sheet ${sheetName}:`, clearError);
+          throw new Error(`Failed to clear sheet ${sheetName}`);
+        }
+
+        if (!membersNim || membersNim.length === 0) continue;
+
+        // 5. Get mahasiswa details for each member in the group
+        const groupMembers = await db.query.mahasiswas.findMany({
+          where: (mahasiswas, { inArray }) =>
+            inArray(mahasiswas.nim, membersNim),
+          columns: {
+            nim: true,
+            name: true,
+            highPriorityDescription: true,
+            leastCompromisableProof: true,
+          },
+        });
 
         // 7. Prepare header row with days as columns
         const headerRow = [
