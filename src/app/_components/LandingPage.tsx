@@ -146,11 +146,11 @@ export function LandingPage() {
   ];
 
   const handleNext = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, pages.length));
+    setCurrentPage((prev) => prev === pages.length ? 1 : prev + 1);
   };
 
   const handlePrev = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
+    setCurrentPage((prev) => prev === 1 ? pages.length : prev - 1);
   };
 
   const handlePageSelect = (pageNumber: number) => {
@@ -160,43 +160,70 @@ export function LandingPage() {
   return (
     <div className="flex flex-col bg-gradient-to-tr from-[#21217c] to-[#214a9b] rounded-3xl mb-8 border shadow-sm">
       {/* Content */}
-      <div className="flex flex-col items-center justify-center py-4">
+      <div className="flex flex-col items-center justify-center py-4 min-h-[280px]">
         {/* Show the current page content */}
         {pages[currentPage - 1]?.content}
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between items-center p-2 w-full">
-        <Button 
-          onClick={handlePrev} 
-          disabled={currentPage === 1}
-          className="bg-white text-blue-700 hover:bg-gray-100"
-        >
-          Previous
-        </Button>
-        
-        <div className="flex space-x-2">
-          {pages.map((page) => (
+      <div className="px-4 py-3 w-full">
+        <div className="flex items-center justify-center">
+          <div className="flex items-center gap-2">
+            {/* Previous button - now always enabled */}
+            <Button 
+              onClick={handlePrev}
+              className="w-10 h-10 rounded-full bg-[#214a9b] text-white border-2 border-white flex items-center justify-center p-0"
+            >
+              <span className="text-xl font-bold">&lt;</span>
+            </Button>
+            
+            {/* First dot (1) */}
             <Button
-              key={page.number}
-              onClick={() => handlePageSelect(page.number)}
-              variant={currentPage === page.number ? "default" : "outline"}
+              onClick={() => handlePageSelect(1)}
+              variant={currentPage === 1 ? "default" : "outline"}
               className={`w-10 h-10 rounded-full ${
-                currentPage === page.number ? "bg-white text-blue-700" : "bg-transparent text-white border-white"
+                currentPage === 1 ? "bg-white text-blue-700" : "bg-transparent text-white border-white"
               }`}
             >
-              {page.number}
+              1
             </Button>
-          ))}
+            
+            {/* Middle dots (2-5) */}
+            <div className="flex space-x-2">
+              {pages.slice(1, 5).map((page) => (
+                <Button
+                  key={page.number}
+                  onClick={() => handlePageSelect(page.number)}
+                  variant={currentPage === page.number ? "default" : "outline"}
+                  className={`w-10 h-10 rounded-full ${
+                    currentPage === page.number ? "bg-white text-blue-700" : "bg-transparent text-white border-white"
+                  }`}
+                >
+                  {page.number}
+                </Button>
+              ))}
+            </div>
+            
+            {/* Last dot (6) */}
+            <Button
+              onClick={() => handlePageSelect(6)}
+              variant={currentPage === 6 ? "default" : "outline"}
+              className={`w-10 h-10 rounded-full ${
+                currentPage === 6 ? "bg-white text-blue-700" : "bg-transparent text-white border-white"
+              }`}
+            >
+              6
+            </Button>
+            
+            {/* Next button - now always enabled */}
+            <Button 
+              onClick={handleNext}
+              className="w-10 h-10 rounded-full bg-[#214a9b] text-white border-2 border-white flex items-center justify-center p-0"
+            >
+              <span className="text-xl font-bold">&gt;</span>
+            </Button>
+          </div>
         </div>
-        
-        <Button 
-          onClick={handleNext} 
-          disabled={currentPage === pages.length}
-          className="bg-white text-blue-700 hover:bg-gray-100"
-        >
-          Next
-        </Button>
       </div>
     </div>
   );

@@ -1,15 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "~/components/ui/button";
+import React from "react";
 
 export const Timeline = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  
   const steps = [
     {
       number: 1,
-      title: "Masuk ke Sistem",
+      title: "Masuk ke sistem",
       description: "Autentikasi dengan NIM"
     },
     {
@@ -34,14 +31,6 @@ export const Timeline = () => {
     }
   ];
 
-  const handlePrev = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, steps.length));
-  };
-
   return (
     <div className="bg-gradient-to-tr from-[#21217c] to-[#214a9b] text-white py-5 px-4 rounded-3xl mb-8 overflow-hidden border shadow-sm">
       <h2 className="text-2xl font-bold text-center mb-6">Cara Kerja Algoritma</h2>
@@ -52,23 +41,8 @@ export const Timeline = () => {
           {/* Horizontal line connecting all dots */}
           <div className="absolute top-8 left-[10%] right-[10%] h-[2px] bg-white"></div>
           
-          {/* All steps in a single row with navigation buttons */}
-          <div className="flex justify-between items-center relative z-10">
-            {/* Previous button */}
-            <div className="flex flex-col items-center mr-2" style={{ maxWidth: '80px' }}>
-              <Button 
-                onClick={handlePrev} 
-                disabled={currentStep === 1}
-                className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#214a9b] text-white border-2 border-white flex items-center justify-center mb-3 p-0"
-              >
-                <span className="text-2xl font-bold">&lt;</span>
-              </Button>
-              <div className="text-center">
-                <p className="font-bold text-xs md:text-sm">Previous</p>
-              </div>
-            </div>
-            
-            {/* Timeline dots */}
+          {/* All steps in a single row */}
+          <div className="flex justify-between relative z-10">
             {steps.map((step) => (
               <div key={step.number} className="flex flex-col items-center" style={{ maxWidth: '120px' }}>
                 <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#214a9b] text-white border-2 border-white flex items-center justify-center mb-3">
@@ -80,20 +54,6 @@ export const Timeline = () => {
                 </div>
               </div>
             ))}
-            
-            {/* Next button */}
-            <div className="flex flex-col items-center ml-2" style={{ maxWidth: '80px' }}>
-              <Button 
-                onClick={handleNext} 
-                disabled={currentStep === steps.length}
-                className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#214a9b] text-white border-2 border-white flex items-center justify-center mb-3 p-0"
-              >
-                <span className="text-2xl font-bold">&gt;</span>
-              </Button>
-              <div className="text-center">
-                <p className="font-bold text-xs md:text-sm">Next</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
