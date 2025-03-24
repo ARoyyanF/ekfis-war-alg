@@ -28,7 +28,7 @@ export function TopNav() {
     <div className="relative w-full border-b-4 bg-[#f3f3f3]" style={navHeight}>
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <Image 
-          src="/images/topnav5.png" 
+          src="/images/topnav4.png" 
           alt="Background" 
           fill={true}
           style={{ objectFit: 'contain' }}
