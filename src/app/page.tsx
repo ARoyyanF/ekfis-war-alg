@@ -4,11 +4,12 @@
 import { auth } from "@clerk/nextjs/server";
 
 import TestAuth from "./_components/test-auth";
-import { SignedIn, useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { NimForm } from "./_components/nimForm";
 import { Button } from "~/components/ui/button";
 import AvailabilityForm from "./_components/AvailabilityForm";
 import { useRouter } from "next/navigation";
+import { LandingPage } from "./_components/LandingPage";
 
 // export default async function HomePage() {
 //   const session = await api.authorization.currentSession();
@@ -90,7 +91,7 @@ export default function Home() {
   useEffect(() => {
     if (mahasiswaData.data) {
       const availability = mahasiswaData.data.availability;
-      setAvailability(availability);
+      setAvailability(availability as { [key: string]: { [type: string]: number } });
     }
   }, [mahasiswaData.data]);
 
@@ -150,57 +151,74 @@ export default function Home() {
   }, [availability]);
 
   return (
-    <div className="container mx-auto p-4">
-      <SignedIn>
-        {mahasiswaData.data && (
-          <div>
-            <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
-              <h1 className="mb-4 text-3xl font-bold">Pendataan Kesibukan</h1>
+    <>
+      {/* Landing Page Section - Always shown first */}
+      <div className="container mx-auto mb-8">
+        <LandingPage />
+      </div>
 
-              <AvailabilityTypeSelector
-                selectedType={selectedType}
-                onTypeChange={setSelectedType}
+      {/* Availability Section - Only for signed-in users */}
+      <div className="container mx-auto p-4">
+        <SignedIn>
+          {mahasiswaData.data && (
+            <div>
+              <div className="mt-8 border rounded-md p-6 bg-white shadow-sm">
+                <h1 className="mb-4 text-3xl font-bold">Pendataan Kesibukan</h1>
+
+                <AvailabilityTypeSelector
+                  selectedType={selectedType}
+                  onTypeChange={setSelectedType}
+                />
+                <Legend />
+
+                <CalendarGrid
+                  days={DAYS}
+                  times={TIMES}
+                  initialUserAvailability={availability}
+                  onAvailabilityChange={handleAvailabilityChange}
+                  selectedType={selectedType}
+                />
+              </div>
+
+              <AvailabilityForm
+                groupNum={undefined}
+                nim={mahasiswaData.data.nim}
+                availability={availability}
+                availabilityQuantified={availabilityQuantified}
               />
-              <Legend />
-
-              <CalendarGrid
+              <Results
                 days={DAYS}
                 times={TIMES}
-                initialUserAvailability={availability}
-                onAvailabilityChange={handleAvailabilityChange}
-                selectedType={selectedType}
+                // availabilityQuantified={availabilityQuantified}
               />
+              <Button
+                onClick={() => {
+                  // localStorage.setItem("availability", "");
+                  setAvailability({});
+                  router.refresh();
+                }}
+              >
+                Reset
+              </Button>
+
+              {isSignedIn && (
+                <Button onClick={async () => await seedMahasiswa.mutateAsync()} className="mt-4">
+                  seed mahasiswas
+                </Button>
+              )}
+
+              {isSignedIn && <pre className="mt-4">{JSON.stringify(availability, null, 2)}</pre>}
             </div>
+          )}
+        </SignedIn>
 
-            <AvailabilityForm
-              groupNum={undefined}
-              nim={mahasiswaData.data.nim}
-              availability={availability}
-              availabilityQuantified={availabilityQuantified}
-            />
-            <Results
-              days={DAYS}
-              times={TIMES}
-              // availabilityQuantified={availabilityQuantified}
-            />
-            <Button
-              onClick={() => {
-                // localStorage.setItem("availability", "");
-                setAvailability({});
-                router.refresh();
-              }}
-            >
-              Reset
-            </Button>
+        <SignedOut>
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4">Please sign in to use the Ekfis War Algorithm</h2>
+            <p className="mb-4">Sign in with your account to use the system.</p>
           </div>
-        )}
-      </SignedIn>
-
-      <Button onClick={async () => await seedMahasiswa.mutateAsync()}>
-        seed mahasiswas
-      </Button>
-
-      <pre>{JSON.stringify(availability, null, 2)}</pre>
-    </div>
+        </SignedOut>
+      </div>
+    </>
   );
 }
