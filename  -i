@@ -1,0 +1,25 @@
+e95f1a12babc7de3f59fbc3897c2fa9a775eb32d<|ENT|><|RY|>Test<|COM|><|MIT|>
+4a6df09dcea633d667a42b6487f73bfb3694850d<|ENT|><|RY|>modifjudul<|COM|><|MIT|>
+cdcf11a5d97888a5e8f96bd9d43bcd609ecedee6<|ENT|><|RY|>perf(submitDbToSheets): make submit faster by removing submitDbToSheets mutation,<|COM|><|MIT|>
+f37aff9234ef07838f70f9ed7614bbdca166d723<|ENT|><|RY|>fix(backend): remove separator entirely<|COM|><|MIT|>
+1246924069b4e67db1f6e8c06324c7bc0646f33d<|ENT|><|RY|>fix(backend): moved wrong separator<|COM|><|MIT|>
+2e34374f52079faca663c05a3b120765103ded9f<|ENT|><|RY|>feat(alg): rebalance medium priority & fix negative value<|COM|><|MIT|>
+22dcd9a479c2bb3d4c24113af9277137beb0defd<|ENT|><|RY|>feat: extend kelompok length to 60<|COM|><|MIT|>
+959acb8b7203895384bc26a1bfb4ecf3890890bd<|ENT|><|RY|>feat(db): seed all nim 23 to db<|COM|><|MIT|>
+b54e0ab2d62eb0909f662d0313475a6797761c29<|ENT|><|RY|>bugfix(db): prevent null json<|COM|><|MIT|>
+1d5971ca0c2297ab9a5d4e5f3326043cf37b0b6d<|ENT|><|RY|>Merge pull request #3 from ARoyyanF/feat/submit<|COM|><|MIT|>
+105f62ae245ed7e9bffabd2e9cfa542fb849c45b<|ENT|><|RY|>update env example<|COM|><|MIT|>
+c2df59cfe861f4f28c9977de36a72710e6509ed2<|ENT|><|RY|>feat(backend): sheetsAPI integration<|COM|><|MIT|>
+50fe950a2bb84e65bb6268a7cb01cf4cc7b2ba75<|ENT|><|RY|>feat(backend): backend fully working<|COM|><|MIT|>
+a681e21647c841ff7b6f6331fac12e4c41bfdd31<|ENT|><|RY|>fix(fe): form & hide if not nim binded<|COM|><|MIT|>
+d3231c191e9c643cc44abee64347b6b386a818b0<|ENT|><|RY|>Merge branch 'feat/submit'<|COM|><|MIT|>
+12d35aadc81c0447571f35592cb78f64b13addb0<|ENT|><|RY|>fix(build)<|COM|><|MIT|>
+83ace61efcb50d4820c1a0d07bd5a6cb06fa55aa<|ENT|><|RY|>feat(fe): rearrange fe<|COM|><|MIT|>
+088d22929ce0225655c54e313c9e79adf015aaa5<|ENT|><|RY|>feat(db): seed mahasiswa capability 2 (uncommited leftover)<|COM|><|MIT|>
+55b5d4991689bb41a6641abaea4698a0295515a8<|ENT|><|RY|>feat(db): seed mahasiswa capability<|COM|><|MIT|>
+4d9da8d8dcf1e6a1bda948a12c582f08349f13d1<|ENT|><|RY|>cleanup: topnav<|COM|><|MIT|>
+27a1c07d5c131ca944ba9d3d2fd2d1b6992f70af<|ENT|><|RY|>fix(trpc): fix enable condition for mahasiwaData on topnav<|COM|><|MIT|>
+b3b57e55d01d1256c07ac0ad190b4feba5f67fab<|ENT|><|RY|>feat: add availability & group db<|COM|><|MIT|>
+28d0e853de0504b51f9d9c162bd87859241057b9<|ENT|><|RY|>chore: remove image<|COM|><|MIT|>
+1b008aa93ce9652aa313848fcca3c042736d3914<|ENT|><|RY|>feat: quantify availability<|COM|><|MIT|>
+3938e33c41c4eccb04b4bd8a3f515e54eb10b963<|ENT|><|RY|>fix(getmahasiswadata): query returning undefined<|COM|><|MIT|>

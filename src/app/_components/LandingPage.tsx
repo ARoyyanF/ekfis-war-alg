@@ -76,6 +76,29 @@ export function LandingPage() {
     },
     {
       number: 4,
+      title: "Algoritma yang Digunakan",
+      content: (
+        <div className="leading-tight py-2 content-center">
+          <div className="max-w-7xl mx-auto px-4">
+            <h1 className="font-montserrat animate-jump-in animate-duration-[3000ms] text-2xl lg:text-4xl font-bold text-center mb-4 text-white">
+              Algoritma yang Digunakan
+            </h1>
+            <p className="font-poppins animate-fade-down animate-duration-[1000ms] animate-delay-[2000ms] text-sm lg:text-base text-center px-4 mb-4 text-white lg:px-24">
+              AutoWar Algorithm mengimplementasikan beberapa metode optimasi:
+            </p>
+            <div className="font-poppins animate-fade-down animate-duration-[1000ms] animate-delay-[2000ms] text-sm lg:text-base text-center px-4 text-white lg:px-24">
+              <ul className="list-disc text-left mx-auto max-w-3xl space-y-2">
+                <li>Constraint Satisfaction Problem (CSP) untuk menemukan solusi yang memenuhi batasan kesibukan mahasiswa.</li>
+                <li>Weighted Matching Algorithm untuk memilih slot yang paling sesuai.</li>
+                <li>Greedy Algorithm dengan Backtracking untuk menghindari konflik dan menyeimbangkan beban slot.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      number: 5,
       title: "Pernyataan Transparansi",
       content: (
         <div className="leading-tight py-2 content-center">
@@ -98,7 +121,7 @@ export function LandingPage() {
       ),
     },
     {
-      number: 5,
+      number: 6,
       title: "Tautan Repository GitHub",
       content: (
         <div className="leading-tight py-2 content-center">
@@ -120,29 +143,6 @@ export function LandingPage() {
         </div>
       ),
     },
-    {
-      number: 6,
-      title: "Algoritma yang Digunakan",
-      content: (
-        <div className="leading-tight py-2 content-center">
-          <div className="max-w-7xl mx-auto px-4">
-            <h1 className="font-montserrat animate-jump-in animate-duration-[3000ms] text-2xl lg:text-4xl font-bold text-center mb-4 text-white">
-              Algoritma yang Digunakan
-            </h1>
-            <p className="font-poppins animate-fade-down animate-duration-[1000ms] animate-delay-[2000ms] text-sm lg:text-base text-center px-4 mb-4 text-white lg:px-24">
-              AutoWar Algorithm mengimplementasikan beberapa metode optimasi:
-            </p>
-            <div className="font-poppins animate-fade-down animate-duration-[1000ms] animate-delay-[2000ms] text-sm lg:text-base text-center px-4 text-white lg:px-24">
-              <ul className="list-disc text-left mx-auto max-w-3xl space-y-2">
-                <li>Constraint Satisfaction Problem (CSP) untuk menemukan solusi yang memenuhi batasan kesibukan mahasiswa.</li>
-                <li>Weighted Matching Algorithm untuk memilih slot yang paling sesuai.</li>
-                <li>Greedy Algorithm dengan Backtracking untuk menghindari konflik dan menyeimbangkan beban slot.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      ),
-    },
   ];
 
   const handleNext = () => {
@@ -158,7 +158,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="flex flex-col bg-gradient-to-tr from-[#21217c] to-[#214a9b] rounded-3xl mb-8">
+    <div className="flex flex-col bg-gradient-to-tr from-[#21217c] to-[#214a9b] rounded-3xl mb-8 border shadow-sm">
       {/* Content */}
       <div className="flex flex-col items-center justify-center py-4">
         {/* Show the current page content */}

@@ -10,6 +10,7 @@ import { Button } from "~/components/ui/button";
 import AvailabilityForm from "./_components/AvailabilityForm";
 import { useRouter } from "next/navigation";
 import { LandingPage } from "./_components/LandingPage";
+import { Timeline } from "./_components/Timeline";
 
 // export default async function HomePage() {
 //   const session = await api.authorization.currentSession();
@@ -153,8 +154,13 @@ export default function Home() {
   return (
     <>
       {/* Landing Page Section - Always shown first */}
-      <div className="container mx-auto mb-8">
+      <div className="container mx-auto p-4">
         <LandingPage />
+      </div>
+
+      {/* Timeline Section - Always shown after Landing Page */}
+      <div className="container mx-auto p-4">
+        <Timeline />
       </div>
 
       {/* Availability Section - Only for signed-in users */}
