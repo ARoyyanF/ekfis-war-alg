@@ -11,16 +11,29 @@ export default function Footer() {
 
   return (
     <footer className="mt-auto bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-      <div className="mx-auto w-full max-w-screen-xl p-4">
-        <div className="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-between">
-          <div className="flex flex-col items-center sm:items-start">
-            <h2 className="text-xl font-semibold">EKFIS WAR</h2>
-            <p className="text-sm text-gray-600 max-w-md">
-              Crafted by a passionate team of three consisting of Royyan,
-              Fathin, and Azwa (FI&apos;22).
+      <div className="mx-auto w-full max-w-screen-xl p-8">
+        <div className="flex flex-row sm:flex-column sm:justify-between gap-8">
+          <div className="flex-1 text-left">
+            <h2 className="text-2xl font-bold">JUDUL</h2>
+            <h2 className="text-2xl font-bold">MUNCULIN DI SINI</h2>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold">About This Web</h3>
+            <p className="text-sm text-gray-600 max-w-xs">
+              this web bussin fr we help sigmas of physics to schedulemaxxing no
+              fanum tax needed no edging for wars only mewing and mogging all
+              throughout the modules
             </p>
           </div>
-          <div className="flex flex-col items-center sm:items-end">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold">About Us</h3>
+            <p className="text-sm text-gray-600 max-w-xs">
+              our team consist of 3 rizzlers of physics 22 that is royyan fathin
+              and azwa we are very good at web developing trust
+            </p>
+          </div>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold">Contact</h3>
             <div className="flex space-x-4 text-gray-500">
               <a href="https://line.me" className="hover:text-gray-700">
                 <i
@@ -35,15 +48,11 @@ export default function Footer() {
                 <Linkedin size={24} />
               </a>
             </div>
-            <div className="text-sm text-gray-500 mt-2">
-              <span>© {new Date().getFullYear()} HIMAFI FMIPA UNJ</span>
-              <span className="mx-2">•</span>
-              <a href="mailto:contact@ekfiswar.com" className="hover:underline">
-                Contact
-              </a>
-            </div>
           </div>
         </div>
+        {/* <div className="mt-4 text-center text-sm text-gray-500">
+          <span>© {new Date().getFullYear()} HIMAFI FMIPA UNJ</span>
+        </div> */}
       </div>
     </footer>
   );
