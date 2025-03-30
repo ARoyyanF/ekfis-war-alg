@@ -18,7 +18,7 @@ export default function Footer() {
             <h2 className="text-2xl font-bold">MUNCULIN DI SINI</h2>
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold">About This Web</h3>
+            <h3 className="text-lg font-semibold">Tentang Web</h3>
             <p className="text-sm text-gray-600 max-w-xs">
               this web bussin fr we help sigmas of physics to schedulemaxxing no
               fanum tax needed no edging for wars only mewing and mogging all
@@ -26,7 +26,7 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold">About Us</h3>
+            <h3 className="text-lg font-semibold">Tentang Kami</h3>
             <p className="text-sm text-gray-600 max-w-xs">
               our team consist of 3 rizzlers of physics 22 that is royyan fathin
               and azwa we are very good at web developing trust
