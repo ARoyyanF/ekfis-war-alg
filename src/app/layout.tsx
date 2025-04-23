@@ -14,6 +14,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { Toaster } from "~/components/ui/sonner";
 import { TopNav } from "~/components/topnav";
 import { api, HydrateClient } from "~/trpc/server";
+import Footer from "./_components/Footer";
 
 export const metadata: Metadata = {
   title: "Ekfis war algorithm",
@@ -36,11 +37,12 @@ export default async function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <body>
+        <body className="min-h-screen flex flex-col">
           <TRPCReactProvider>
             <HydrateClient>
               <TopNav />
-              {children}
+              <main className="flex-grow">{children}</main>
+              <Footer />
               <Toaster richColors />
             </HydrateClient>
           </TRPCReactProvider>

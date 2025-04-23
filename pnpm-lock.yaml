@@ -59,6 +59,9 @@ importers:
       googleapis:
         specifier: ^146.0.0
         version: 146.0.0
+      lucide:
+        specifier: ^0.483.0
+        version: 0.483.0
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@18.3.1)
@@ -2216,6 +2219,9 @@ packages:
     resolution: {integrity: sha512-NJzvVu1HwFVeZ+Gwq2q00KygM1aBhy/ZrhY9FsAgJtpB+E4R7uxRk9M2iKvHa6/vNxZydIB59htha4c2vvwvVg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  lucide@0.483.0:
+    resolution: {integrity: sha512-qccwC6H5QACYO6MMKnMJ5vg7ecGiWSrpgHrQFOdp/n+AnhndQjq0vTBsMX2KfXeMLSLbeFDa+6QtVhx3kS3RlQ==}
 
   map-obj@4.3.0:
     resolution: {integrity: sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==}
@@ -5121,6 +5127,8 @@ snapshots:
   lucide-react@0.475.0(react@18.3.1):
     dependencies:
       react: 18.3.1
+
+  lucide@0.483.0: {}
 
   map-obj@4.3.0: {}
 
