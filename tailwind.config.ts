@@ -8,6 +8,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
+        montserrat: ["Montserrat", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -56,7 +58,37 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
       },
+      animation: {
+        "fade-up": "fade-up 0.5s ease-out",
+        "fade-down": "fade-down 0.5s ease-out",
+        "fade-left": "fade-left 0.5s ease-out",
+        "fade-right": "fade-right 0.5s ease-out",
+        "jump-in": "jump-in 1s ease-out",
+      },
+      keyframes: {
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-down": {
+          "0%": { opacity: "0", transform: "translateY(-20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-left": {
+          "0%": { opacity: "0", transform: "translateX(-20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        "fade-right": {
+          "0%": { opacity: "0", transform: "translateX(20px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        "jump-in": {
+          "0%": { transform: "scale(0.5)", opacity: "0" },
+          "50%": { transform: "scale(1.05)", opacity: "0.5" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+      },
     },
   },
-  // plugins: [await import("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;

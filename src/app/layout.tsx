@@ -3,6 +3,7 @@ import "@uploadthing/react/styles.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { Montserrat, Poppins } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -16,6 +17,19 @@ import { TopNav } from "~/components/topnav";
 import { api, HydrateClient } from "~/trpc/server";
 import Footer from "./_components/Footer";
 
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-montserrat",
+});
+
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+});
+
 export const metadata: Metadata = {
   title: "Ekfis war algorithm",
   description: "inspired by painful ekfis",
@@ -27,7 +41,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${GeistSans.variable}`}>
+      <html lang="en" className={`${GeistSans.variable} ${montserrat.variable} ${poppins.variable}`}>
         <NextSSRPlugin
           /**
            * The `extractRouterConfig` will extract **only** the route configs
