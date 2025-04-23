@@ -66,3 +66,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .text-yellow-300 {
+    color: #fcd34d;
+  }
+  
+  .animate-duration-\[1000ms\] {
+    animation-duration: 1000ms;
+  }
+  
+  .animate-duration-\[3000ms\] {
+    animation-duration: 3000ms;
+  }
+  
+  .animate-delay-\[2000ms\] {
+    animation-delay: 2000ms;
+  }
+  
+  .animate-delay-\[3000ms\] {
+    animation-delay: 3000ms;
+  }
+  
+  .newline:after {
+    content: "\A";
+    white-space: pre;
+  }
+}
