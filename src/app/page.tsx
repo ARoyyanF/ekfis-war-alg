@@ -199,7 +199,7 @@ export default function Home() {
                 times={TIMES}
                 // availabilityQuantified={availabilityQuantified}
               />
-              {/* <Button
+              {/* <Button,
               onClick={() => {
                 // localStorage.setItem("availability", "");
                 setAvailability({});
@@ -207,7 +207,7 @@ export default function Home() {
               }}
             >
               Reset
-            </Button> */}
+            </Button,> */}
             </div>
           )}
         </SignedIn>
