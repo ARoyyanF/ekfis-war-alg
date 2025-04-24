@@ -19,16 +19,17 @@ import TimeslotTable from "~/app/_components/timeslot-table";
 const mockTimeslotTables = [
   {
     id: 1,
-    name: "Option A",
-    description: "Morning focus for Group 1, afternoon for Group 2",
+    name: "Jadwal A",
+    description:
+      "Berdasarkan gale-shapely matching algorithm tanpa elemen randomisasi",
     slots: {
       Monday: {
         "07:00": 1,
-        "08:00": 1,
-        "09:00": 1,
-        "10:00": 1,
-        "11:00": 1,
-        "12:00": 2,
+        "08:00": 2,
+        "09:00": 3,
+        "10:00": 4,
+        "11:00": 5,
+        "12:00": 40,
         "13:00": 2,
         "14:00": null,
         "15:00": 2,
@@ -91,8 +92,9 @@ const mockTimeslotTables = [
   },
   {
     id: 2,
-    name: "Option B",
-    description: "Alternating days for each group",
+    name: "Jadwal B",
+    description:
+      "Berdasarkan gale-shapely matching algorithm dengan elemen randomisasi",
     slots: {
       Monday: {
         "07:00": 1,
@@ -163,12 +165,86 @@ const mockTimeslotTables = [
   },
   {
     id: 3,
-    name: "Option C",
-    description: "Mixed arrangement with shared slots",
+    name: "Jadwal C",
+    description:
+      "Berdasarkan gale-shapely matching algorithm dengan elemen randomisasi",
     slots: {
       Monday: {
         "07:00": 1,
         "08:00": 1,
+        "09:00": 2,
+        "10:00": 2,
+        "11:00": 1,
+        "12:00": 1,
+        "13:00": 2,
+        "14:00": 2,
+        "15:00": 1,
+        "16:00": 1,
+        "17:00": null,
+      },
+      Tuesday: {
+        "07:00": 2,
+        "08:00": 2,
+        "09:00": 1,
+        "10:00": 1,
+        "11:00": 2,
+        "12:00": 2,
+        "13:00": 1,
+        "14:00": 1,
+        "15:00": 2,
+        "16:00": 2,
+        "17:00": null,
+      },
+      Wednesday: {
+        "07:00": 1,
+        "08:00": 1,
+        "09:00": 2,
+        "10:00": 2,
+        "11:00": 1,
+        "12:00": 1,
+        "13:00": 2,
+        "14:00": 2,
+        "15:00": 1,
+        "16:00": 1,
+        "17:00": null,
+      },
+      Thursday: {
+        "07:00": 2,
+        "08:00": 2,
+        "09:00": 1,
+        "10:00": 1,
+        "11:00": 2,
+        "12:00": 2,
+        "13:00": 1,
+        "14:00": 1,
+        "15:00": 2,
+        "16:00": 2,
+        "17:00": null,
+      },
+      Friday: {
+        "07:00": 1,
+        "08:00": 1,
+        "09:00": 2,
+        "10:00": 2,
+        "11:00": 1,
+        "12:00": 1,
+        "13:00": 2,
+        "14:00": 2,
+        "15:00": 1,
+        "16:00": 1,
+        "17:00": null,
+      },
+    },
+  },
+  {
+    id: 4,
+    name: "Jadwal D",
+    description:
+      "Berdasarkan gale-shapely matching algorithm dengan elemen randomisasi",
+    slots: {
+      Monday: {
+        "07:00": 23,
+        "08:00": "ree",
         "09:00": 2,
         "10:00": 2,
         "11:00": 1,
@@ -325,7 +401,7 @@ export default function TimeslotPolling() {
     <div className="max-w-4xl mx-auto">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="view">View Options</TabsTrigger>
+          <TabsTrigger value="view">Voting</TabsTrigger>
           <TabsTrigger value="results">Results</TabsTrigger>
         </TabsList>
 

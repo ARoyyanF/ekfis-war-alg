@@ -21,12 +21,6 @@ export default function TimeslotTable({ slots }: TimeslotTableProps) {
   const days = Object.keys(slots);
   const times = Object.keys(slots[days[0]]).sort();
 
-  // Group color mapping
-  const groupColors: Record<number, string> = {
-    1: "bg-blue-100 dark:bg-blue-950",
-    2: "bg-amber-100 dark:bg-amber-950",
-  };
-
   return (
     <div className="overflow-x-auto">
       <Table className="border-collapse">
@@ -47,11 +41,8 @@ export default function TimeslotTable({ slots }: TimeslotTableProps) {
               {days.map((day) => {
                 const group = slots[day][time];
                 return (
-                  <TableCell
-                    key={`${day}-${time}`}
-                    className={`text-center ${group ? groupColors[group] : ""}`}
-                  >
-                    {group ? `Group ${group}` : "-"}
+                  <TableCell key={`${day}-${time}`} className={`text-center`}>
+                    {group ? `Kel. ${group}` : "-"}
                   </TableCell>
                 );
               })}
