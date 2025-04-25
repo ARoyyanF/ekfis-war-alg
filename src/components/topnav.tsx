@@ -22,37 +22,53 @@ export function TopNav() {
   });
 
   // Use different height when logged in with NIM to provide more space
-  const navHeight = mahasiswaData.data ? { height: "auto", minHeight: "120px" } : { height: "auto", maxHeight: "120px" };
+  const navHeight = mahasiswaData.data
+    ? { height: "auto", minHeight: "120px" }
+    : { height: "auto", maxHeight: "120px" };
 
   return (
-    <div className="relative w-full border-b-4 bg-[#f3f3f3]" style={navHeight}>
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <Image 
-          src="/images/topnav4.png" 
-          alt="Background" 
-          fill={true}
-          style={{ objectFit: 'contain' }}
+    <div
+      className="relative w-full border-b-4 bg-[#f3f3f3] flex items-center justify-between"
+      style={navHeight}
+    >
+      <div
+        className="h-[120px] w-auto overflow-hidden"
+        style={{
+          clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0 100%)", // Creates a diagonal edge
+        }}
+      >
+        <Image
+          src="/images/topnav4.png"
+          alt="Background"
+          width={1000}
+          height={120}
+          className="h-full w-full object-cover object-left p-0 m-0"
           priority
-          sizes="100vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 70vw"
         />
       </div>
-      <nav className="relative flex w-full h-full items-center justify-between px-6 py-3 text-xl font-semibold z-10">
-        <div className="flex-1">
-          {/* Logo area */}
-        </div>
-        <div className="flex flex-row items-center justify-end gap-6">
+
+      <nav className="flex items-center gap-6 text-xl font-semibold pr-6">
+        <div className="flex-1">{/* Logo area */}</div>
+        <div className="flex flex-row items-center gap-6">
           <SignedOut>
             <div className="flex flex-col items-start">
-              <span className="text-sm font-normal mb-1 text-gray-700">NIM</span>
+              <span className="text-sm font-normal mb-1 text-gray-700">
+                NIM
+              </span>
               <SignInButton />
             </div>
           </SignedOut>
           <SignedIn>
             {mahasiswaData.data && (
               <div className="flex flex-row items-center gap-5">
-                <div className="flex flex-col text-right">
-                  <p className="text-gray-800 mb-1 text-lg font-medium">{mahasiswaData.data.name}</p>
-                  <p className="text-gray-700 text-base font-medium">{mahasiswaData.data.nim}</p>
+                <div className="flex flex-col text-right min-w-[150px]">
+                  <p className="text-gray-800 mb-1 text-lg font-medium">
+                    {mahasiswaData.data.name}
+                  </p>
+                  <p className="text-gray-700 text-base font-medium">
+                    {mahasiswaData.data.nim}
+                  </p>
                 </div>
                 <Button
                   type="button"
