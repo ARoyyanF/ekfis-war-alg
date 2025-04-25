@@ -30,6 +30,7 @@ export const mahasiswas = createTable("mahasiswa", {
   availabilityQuantified: json("availability_Quantified").notNull().default({}),
   leastCompromisableProof: json("least_compromisable_proof"),
   highPriorityDescription: json("high_priority_description"),
+  votedScheduleId: integer("voted_schedule_id"), // Added field for voting
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)

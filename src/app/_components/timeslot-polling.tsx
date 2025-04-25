@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,11 +12,20 @@ import {
 import { Button } from "~/components/ui/button";
 import { Progress } from "~/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import TimeslotTable from "~/app/_components/timeslot-table";
-// import { toast } from "~/hooks/use-toast";
+import TimeslotTable, {
+  type TimeslotData,
+} from "~/app/_components/timeslot-table";
+import { api } from "~/trpc/react";
+import { toast } from "sonner"; // Import sonner toast
+import { Loader2 } from "lucide-react";
 
 // Mock data for timeslot tables
-const mockTimeslotTables = [
+const mockTimeslotTables: Array<{
+  id: number;
+  name: string;
+  description: string;
+  slots: TimeslotData;
+}> = [
   {
     id: 1,
     name: "Jadwal A",
@@ -244,7 +253,7 @@ const mockTimeslotTables = [
     slots: {
       Monday: {
         "07:00": 23,
-        "08:00": "ree",
+        "08:00": null,
         "09:00": 2,
         "10:00": 2,
         "11:00": 1,
@@ -312,90 +321,78 @@ const mockTimeslotTables = [
 ];
 
 export default function TimeslotPolling() {
-  const [votes, setVotes] = useState<Record<number, number>>({});
-  const [userVoted, setUserVoted] = useState<number | null>(null);
-  const [totalVotes, setTotalVotes] = useState(0);
   const [activeTab, setActiveTab] = useState("view");
 
-  // Load votes from localStorage on component mount
-  useEffect(() => {
-    const savedVotes = localStorage.getItem("timeslotVotes");
-    const userVote = localStorage.getItem("userTimeslotVote");
+  const { data: userData, isLoading: isLoadingUser } =
+    api.authorization.getMahasiswaData.useQuery(undefined, {
+      retry: false,
+      refetchOnWindowFocus: false,
+    });
 
-    if (savedVotes) {
-      const parsedVotes = JSON.parse(savedVotes);
-      setVotes(parsedVotes);
+  const {
+    data: voteCountsData,
+    isLoading: isLoadingVotes,
+    refetch: refetchVotes,
+  } = api.voting.getVoteCounts.useQuery(undefined, {
+    refetchInterval: 5000,
+  });
 
-      // Calculate total votes
-      const total = Object.values(parsedVotes).reduce(
-        (sum: number, count: number) => sum + count,
-        0,
-      );
-      setTotalVotes(total);
-    } else {
-      // Initialize with empty votes
-      const initialVotes = mockTimeslotTables.reduce(
-        (acc, table) => {
-          acc[table.id] = 0;
-          return acc;
-        },
-        {} as Record<number, number>,
-      );
-      setVotes(initialVotes);
-    }
+  const recordVoteMutation = api.voting.recordVote.useMutation({
+    onSuccess: async () => {
+      toast.success("Vote updated successfully!");
+      await refetchVotes();
+    },
+    onError: (error) => {
+      toast.error("Error updating vote", { description: error.message });
+    },
+  });
 
-    if (userVote) {
-      setUserVoted(Number.parseInt(userVote));
-    }
-  }, []);
+  const userVoted = userData?.votedScheduleId ?? null;
+
+  const totalVotes = voteCountsData
+    ? Object.values(voteCountsData).reduce((sum, count) => sum + count, 0)
+    : 0;
 
   const handleVote = (tableId: number) => {
     if (userVoted) {
-      //   toast({
-      //     title: "Already voted",
-      //     description: "You have already cast your vote.",
-      //     variant: "destructive",
-      //   });
+      toast.error("Already voted", {
+        description: "You can reset your vote first if you want to change it.",
+      });
+      return;
+    }
+    if (!userData) {
+      toast.error("Not Logged In", {
+        description: "Please log in and register your NIM to vote.",
+      });
       return;
     }
 
-    const newVotes = { ...votes };
-    newVotes[tableId] = (newVotes[tableId] || 0) + 1;
-
-    // Save to localStorage
-    localStorage.setItem("timeslotVotes", JSON.stringify(newVotes));
-    localStorage.setItem("userTimeslotVote", tableId.toString());
-
-    setVotes(newVotes);
-    setUserVoted(tableId);
-    setTotalVotes(totalVotes + 1);
+    recordVoteMutation.mutate({ scheduleId: tableId });
     setActiveTab("results");
-
-    // toast({
-    //   title: "Vote recorded",
-    //   description: "Thank you for your vote!",
-    // });
   };
 
   const resetVote = () => {
-    localStorage.removeItem("userTimeslotVote");
-
-    const newVotes = { ...votes };
-    if (userVoted) {
-      newVotes[userVoted] = Math.max(0, (newVotes[userVoted] || 0) - 1);
+    if (!userVoted) {
+      toast.error("No vote to reset");
+      return;
     }
-
-    localStorage.setItem("timeslotVotes", JSON.stringify(newVotes));
-
-    setVotes(newVotes);
-    setUserVoted(null);
-    setTotalVotes(Math.max(0, totalVotes - 1));
-
-    // toast({
-    //   title: "Vote reset",
-    //   description: "You can now vote again.",
-    // });
+    if (!userData) {
+      toast.error("Not Logged In", {
+        description: "Please log in and register your NIM to reset vote.",
+      });
+      return;
+    }
+    recordVoteMutation.mutate({ scheduleId: null });
   };
+
+  if (isLoadingUser || isLoadingVotes) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <span className="ml-2">Loading voting data...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -406,33 +403,44 @@ export default function TimeslotPolling() {
         </TabsList>
 
         <TabsContent value="view" className="space-y-8">
-          {mockTimeslotTables.map((table) => (
-            <Card key={table.id} className="w-full">
-              <CardHeader>
-                <CardTitle>{table.name}</CardTitle>
-                <CardDescription>{table.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <TimeslotTable slots={table.slots} />
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button
-                  onClick={() => handleVote(table.id)}
-                  disabled={userVoted !== null}
-                  variant={userVoted === table.id ? "secondary" : "default"}
-                >
-                  {userVoted === table.id
-                    ? "Your Vote"
-                    : "Vote for this option"}
-                </Button>
-                {votes[table.id] > 0 && (
-                  <div className="text-sm text-muted-foreground">
-                    {votes[table.id]} vote{votes[table.id] !== 1 ? "s" : ""}
-                  </div>
-                )}
-              </CardFooter>
-            </Card>
-          ))}
+          {mockTimeslotTables.map((table) => {
+            const currentVoteCount = voteCountsData?.[table.id] ?? 0;
+            return (
+              <Card key={table.id} className="w-full">
+                <CardHeader>
+                  <CardTitle>{table.name}</CardTitle>
+                  <CardDescription>{table.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <TimeslotTable slots={table.slots} />
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                  <Button
+                    onClick={() => handleVote(table.id)}
+                    disabled={
+                      userVoted !== null ||
+                      recordVoteMutation.isPending ||
+                      !userData
+                    }
+                    variant={userVoted === table.id ? "secondary" : "default"}
+                  >
+                    {recordVoteMutation.isPending &&
+                    recordVoteMutation.variables?.scheduleId === table.id ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : null}
+                    {userVoted === table.id
+                      ? "Your Vote"
+                      : "Vote for this option"}
+                  </Button>
+                  {currentVoteCount > 0 && (
+                    <div className="text-sm text-muted-foreground">
+                      {currentVoteCount} vote{currentVoteCount !== 1 ? "s" : ""}
+                    </div>
+                  )}
+                </CardFooter>
+              </Card>
+            );
+          })}
         </TabsContent>
 
         <TabsContent value="results">
@@ -443,7 +451,7 @@ export default function TimeslotPolling() {
             </CardHeader>
             <CardContent className="space-y-6">
               {mockTimeslotTables.map((table) => {
-                const voteCount = votes[table.id] || 0;
+                const voteCount = voteCountsData?.[table.id] ?? 0;
                 const percentage =
                   totalVotes > 0 ? (voteCount / totalVotes) * 100 : 0;
 
@@ -470,7 +478,15 @@ export default function TimeslotPolling() {
             </CardContent>
             <CardFooter>
               {userVoted && (
-                <Button variant="outline" onClick={resetVote}>
+                <Button
+                  variant="outline"
+                  onClick={resetVote}
+                  disabled={recordVoteMutation.isPending || !userData}
+                >
+                  {recordVoteMutation.isPending &&
+                  recordVoteMutation.variables?.scheduleId === null ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : null}
                   Reset my vote
                 </Button>
               )}

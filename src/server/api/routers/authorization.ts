@@ -24,12 +24,26 @@ export const authorizationRouter = createTRPCRouter({
     console.log("authenticated user: ", ctx.auth);
     const registeredMahasiswa = await db.query.mahasiswas.findFirst({
       where: (model, { eq }) => eq(model.authId, ctx.auth.userId),
+      columns: {
+        nim: true,
+        name: true,
+        authId: true,
+        groupNumber: true,
+        availability: true,
+        availabilityQuantified: true,
+        leastCompromisableProof: true,
+        highPriorityDescription: true,
+        votedScheduleId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
     if (!registeredMahasiswa) {
       return null;
     }
     return registeredMahasiswa;
   }),
+
   bindNimWithUser: protectedProcedure
     .input(z.object({ nim: z.number() }))
     .output(z.object({ message: z.string(), isOk: z.boolean() }))

@@ -4,6 +4,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { authorizationRouter } from "./routers/authorization";
 import { seedRouter } from "./routers/seed";
 import { backendRouter } from "./routers/backend";
+import { votingRouter } from "./routers/voting"; // Import the new voting router
 /**
  * This is the primary router for your server.
  *
@@ -13,6 +14,7 @@ export const appRouter = createTRPCRouter({
   authorization: authorizationRouter,
   seed: seedRouter,
   backend: backendRouter,
+  voting: votingRouter, // Add the voting router
 });
 
 // export type definition of API
