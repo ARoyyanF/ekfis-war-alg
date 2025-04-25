@@ -21,8 +21,9 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-2">Tentang Web</h3>
             <p className="text-sm text-gray-600 max-w-xs">
               Platform ini dirancang untuk membantu praktikan dalam menentukan
-              jadwal untuk mata kuliah Eksperimen Fisika. Dengan algoritma ini,
-              perancangan jadwal dibuat sedemikian adil dan efisien.
+              jadwal untuk mata kuliah Eksperimen Fisika. Menggunakan Gale
+              Shapley Algorithm, perancangan jadwal dibuat sedemikian adil dan
+              efisien.
             </p>
           </div>
           <div className="flex-1">
